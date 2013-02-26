@@ -1,13 +1,13 @@
 function [ best_position, position_list, list_size ] = find_fit( v1, f1, v2, f2 )
 %TRANSFORM Summary of this function goes here
 %   Detailed explanation goes here
-min_angle = -pi/90;
-max_angle = pi/90;
-number = 3; % number of points in the range [min_angle, max_angle]
+min_angle = -pi/180;
+max_angle = pi/180;
+number = 5; % number of points in the range [min_angle, max_angle]
 
 best_position = zeros(1,7);
 best_position(1) = intmax('int32');
-total_size = 4*4*6*(number^3) + 1;
+total_size = 5*5*6*(number^3) + 1;
 position_list = zeros(total_size, 7);
 
 list_count = 0;
@@ -15,11 +15,11 @@ obj_upper = pqp_createmodel(v2', f2');
 obj_lower = pqp_createmodel(v1', f1');
 center = center_v(v1);
 temp_pos = zeros(1, 7);
-for x = linspace(-1, 1, 3)
+for x = linspace(-0.5, 0.5, 5)
     temp_pos(2) = x;
-    for y = linspace(-1, 1, 3)
+    for y = linspace(-0.5, 0.5, 5)
         temp_pos(3) = y;
-        for z = linspace(-3, 0.3, 3) %transform lower jaw
+        for z = linspace(-1, 1, 6) %transform lower jaw
             temp_pos(4) = z;
             translation = [x y z]';
             for i = linspace(min_angle, max_angle, number)
@@ -41,7 +41,7 @@ for x = linspace(-1, 1, 3)
                         trans_mat(2,4) = y;
                         trans_mat(3,4) = z;
                         translated_vertex = transformPoint3d(v1, trans_mat);
-                        dists = calc_dist(translated_vertex, f1, v2, f2);
+                        dists = calc_dist(translated_vertex, f1, v2, f2, obj_upper);
                         temp_pos(1) = mean(dists);
                         disp(temp_pos(1));
                         list_count = list_count + 1;

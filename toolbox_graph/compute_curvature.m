@@ -44,7 +44,7 @@ A = -triangulation2adjacency(face);
 
 i = [face(1,:) face(2,:) face(3,:)];
 j = [face(2,:) face(3,:) face(1,:)];
-s = [1:m 1:m 1:m];
+s = [1:m 1:m 1:m];    
 A = sparse(i,j,s,n,n); 
 
 [i,j,s1] = find(A);     % direct link

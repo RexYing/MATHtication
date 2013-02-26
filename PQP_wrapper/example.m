@@ -1,4 +1,4 @@
-[V,F]=read_off('../../../meshes/examples/mushroom.off');
+[V,F]=read_off('tetrahedron.off');
 
 obj1 = pqp_createmodel(V,F);
 obj2 = pqp_createmodel(V+0.1,F);
