@@ -71,6 +71,12 @@ d = d./mean(d);
 % normals to faces
 [tmp,normal] = compute_normal(vertex,face);
 
+for it = 1:size(E, 1)
+    if E(it, 1) > size(normal, 2) || E(it, 2) > size(normal, 2)
+        E(it, 1) = idivide(int32(E(it, 1)), 2);
+        E(it, 2) = idivide(int32(E(it, 2)), 2);
+    end
+end
 % inner product of normals
 dp = sum( normal(:,E(:,1)) .* normal(:,E(:,2)), 1 );
 % angle un-signed
