@@ -112,45 +112,45 @@ view(-23.5,5);
 % Green points are above the plane, red points are below.
 
 
-%% Fitting a line to 3-D data
-% Fitting a straight line to the data is even simpler, and because of the
-% nesting property of PCA, we can use the components that have already been
-% computed. The direction vector that defines the line is given by the
-% coefficients for the first principal component. The second and third PCs
-% are orthogonal to the first, and their coefficients define directions
-% that are perpendicular to the line. The equation of the line is |meanX +
-% t*dirVect|.
-dirVect = coeff(:,1)
-
-%%
-% The first coordinate of the principal component scores gives the
-% projection of each point onto the line. As with the 2-D fit, the PC
-% coefficient vectors multiplied by the scores the gives the fitted points
-% in the original coordinate system.
-Xfit1 = repmat(meanX,n,1) + score(:,1)*coeff(:,1)';
-
-%%
-% Plot the line, the original data, and their projection to the line.
-t = [min(score(:,1))-.2, max(score(:,1))+.2];
-endpts = [meanX + t(1)*dirVect'; meanX + t(2)*dirVect'];
-plot3(endpts(:,1),endpts(:,2),endpts(:,3),'k-');
-
-X1 = [X(:,1) Xfit1(:,1) nan*ones(n,1)];
-X2 = [X(:,2) Xfit1(:,2) nan*ones(n,1)];
-X3 = [X(:,3) Xfit1(:,3) nan*ones(n,1)];
-hold on
-plot3(X1',X2',X3','b-', X(:,1),X(:,2),X(:,3),'bo');
-hold off
-maxlim = max(abs(X(:)))*1.1;
-axis([-maxlim maxlim -maxlim maxlim -maxlim maxlim]);
-axis square
-view(-23.5,5);
-grid on
-
-%%
-% While it appears that some of the projections in this plot are not
-% perpendicular to the line, that's just because we're plotting 3-D data
-% in two dimensions. In a live |MATLAB| figure window, you could
-% interactively rotate the plot to different perspectives to verify that
-% the projections are indeed perpendicular, and to get a better feel for
-% how the line fits the data. 
+% %% Fitting a line to 3-D data
+% % Fitting a straight line to the data is even simpler, and because of the
+% % nesting property of PCA, we can use the components that have already been
+% % computed. The direction vector that defines the line is given by the
+% % coefficients for the first principal component. The second and third PCs
+% % are orthogonal to the first, and their coefficients define directions
+% % that are perpendicular to the line. The equation of the line is |meanX +
+% % t*dirVect|.
+% dirVect = coeff(:,1)
+% 
+% %%
+% % The first coordinate of the principal component scores gives the
+% % projection of each point onto the line. As with the 2-D fit, the PC
+% % coefficient vectors multiplied by the scores the gives the fitted points
+% % in the original coordinate system.
+% Xfit1 = repmat(meanX,n,1) + score(:,1)*coeff(:,1)';
+% 
+% %%
+% % Plot the line, the original data, and their projection to the line.
+% t = [min(score(:,1))-.2, max(score(:,1))+.2];
+% endpts = [meanX + t(1)*dirVect'; meanX + t(2)*dirVect'];
+% plot3(endpts(:,1),endpts(:,2),endpts(:,3),'k-');
+% 
+% X1 = [X(:,1) Xfit1(:,1) nan*ones(n,1)];
+% X2 = [X(:,2) Xfit1(:,2) nan*ones(n,1)];
+% X3 = [X(:,3) Xfit1(:,3) nan*ones(n,1)];
+% hold on
+% plot3(X1',X2',X3','b-', X(:,1),X(:,2),X(:,3),'bo');
+% hold off
+% maxlim = max(abs(X(:)))*1.1;
+% axis([-maxlim maxlim -maxlim maxlim -maxlim maxlim]);
+% axis square
+% view(-23.5,5);
+% grid on
+% 
+% %%
+% % While it appears that some of the projections in this plot are not
+% % perpendicular to the line, that's just because we're plotting 3-D data
+% % in two dimensions. In a live |MATLAB| figure window, you could
+% % interactively rotate the plot to different perspectives to verify that
+% % the projections are indeed perpendicular, and to get a better feel for
+% % how the line fits the data. 
