@@ -28,8 +28,9 @@
 %% Fitting a plane to 3-D data
 % First, we generate some trivariate normal data for the example. Two of
 % the variables are fairly correlated strongly.
-randn('state',0);
-X = mvnrnd([0 0 0], [1 .2 .7; .2 1 0; .7 0 1],50);
+% randn('state',0);
+% X = mvnrnd([0 0 0], [1 .2 .7; .2 1 0; .7 0 1],50);
+X = vertex_u(high_curvature_points(:), :);
 plot3(X(:,1),X(:,2),X(:,3),'bo');
 grid on;
 maxlim = max(abs(X(:)))*1.1;
@@ -87,7 +88,8 @@ sse = sum(error.^2)
 [xgrid,ygrid] = meshgrid(linspace(min(X(:,1)),max(X(:,1)),5), ...
                           linspace(min(X(:,2)),max(X(:,2)),5));
 zgrid = (1/normal(3)) .* (meanX*normal - (xgrid.*normal(1) + ygrid.*normal(2)));
-h = mesh(xgrid,ygrid,zgrid,'EdgeColor',[0 0 0],'FaceAlpha',0);
+h = mesh(xgrid,ygrid,zgrid,'EdgeColor',[0 0 1],'FaceAlpha',0, 'LineWidth', 0.4);
+% h = mesh(xgrid,ygrid,zgrid,'FaceLighting','gouraud','LineWidth', 0.4);
 
 hold on
 above = (X-repmat(meanX,n,1))*normal > 0;
@@ -96,12 +98,14 @@ nabove = sum(above);
 X1 = [X(above,1) Xfit(above,1) nan*ones(nabove,1)];
 X2 = [X(above,2) Xfit(above,2) nan*ones(nabove,1)];
 X3 = [X(above,3) Xfit(above,3) nan*ones(nabove,1)];
-plot3(X1',X2',X3','-', X(above,1),X(above,2),X(above,3),'o', 'Color',[0 .7 0]);
+% plot3(X1',X2',X3','-', X(above,1),X(above,2),X(above,3),'.', 'Color',[0 .7 0], 'MarkerSize',10);
+plot3(X(above,1),X(above,2),X(above,3),'.', 'Color',[0 .7 0], 'MarkerSize',10);
 nbelow = sum(below);
 X1 = [X(below,1) Xfit(below,1) nan*ones(nbelow,1)];
 X2 = [X(below,2) Xfit(below,2) nan*ones(nbelow,1)];
 X3 = [X(below,3) Xfit(below,3) nan*ones(nbelow,1)];
-plot3(X1',X2',X3','-', X(below,1),X(below,2),X(below,3),'o', 'Color',[1 0 0]);
+% plot3(X1',X2',X3','-', X(below,1),X(below,2),X(below,3),'.', 'Color',[1 0 0], 'MarkerSize',10);
+plot3(X(below,1),X(below,2),X(below,3),'.', 'Color',[1 0 0], 'MarkerSize',10);
 
 hold off
 maxlim = max(abs(X(:)))*1.1;
