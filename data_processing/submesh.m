@@ -33,11 +33,7 @@ function [visited] = submesh(faces)
 %
 % * AUTHOR
 %
-% Gabriel Peyre 2007
-%
-% Modified by Rex Ying
-% It is now able to accept file as a path name containing multiple '.'
-% File extension is determined by examining the string after the last '.'
+% Rex Ying
 %
 
 AdjMat = mesh2sparse(faces);

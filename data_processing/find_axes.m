@@ -30,8 +30,10 @@ function [ axes ] = find_axes( vertices )
 % Rex Ying
 %
 
-[coeff,score,latent,tsquared] = pca(___)
-
+[axes,score,latent,tsquared] = pca(vertices);
+cumPercentVar = cumsum(latent) / sum(latent);
+fprintf('Two of the dimensions account for %3.1f%% of the variance.\n', ...
+    cumPercentVar(2));
 
 
 end
