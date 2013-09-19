@@ -16,6 +16,12 @@ addsubdir('data_processing')
 % add data
 addpath data
 
+% add java path
+% jar file should be compiled with jre in Matlabroot/sys/java/jre and make
+% sure there is no version incompatibility
+% classes should be public
+javaaddpath javacode.jar
+
 % -------------------------------
 % Date : April 15, 2013
 % Rex Ying

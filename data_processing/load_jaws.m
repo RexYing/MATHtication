@@ -10,7 +10,6 @@
 % verts_upper, faces_upper: vertices and faces list of upper jaw mesh
 %
 
-startup
 clear all
 close all
 
@@ -26,9 +25,9 @@ plot_mesh(verts_lower, faces_lower, options);
 
 name = 'upper_cropped-downsampled.ply';
 options.name = name;
-[vertex_u,faces_u]=read_mesh(name);
-options.face_vertex_color = repmat([0.5, 0.5, 0.5], size(vertex_u,1), 1);
-plot_mesh(vertex_u, faces_u, options);
+[verts_upper,faces_upper]=read_mesh(name);
+options.face_vertex_color = repmat([0.5, 0.5, 0.5], size(verts_upper,1), 1);
+plot_mesh(verts_upper, faces_upper, options);
 
 % name = strcat('upper_cropped-molars.ply');
 % options.name = name;
