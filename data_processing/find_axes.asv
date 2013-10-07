@@ -30,11 +30,17 @@ function [ axes ] = find_axes( vertices )
 % Rex Ying
 %
 
-[axes,score,latent,tsquared] = pca(vertices);
+C = cov(vertices);
+[axes, D] = eig(C);
+
+latent = diag(D);
+% reverse order: from most significant component to the least significant
+latent = latent(end: -1: 1);
+axes = axes(:, end: -1: 1);
 cumPercentVar = cumsum(latent) / sum(latent);
 fprintf('Two of the dimensions account for %3.1f%% of the variance.\n', ...
-    cumPercentVar(2));
+     cumPercentVar(2) * 100);
 
-
+ 
 end
 
