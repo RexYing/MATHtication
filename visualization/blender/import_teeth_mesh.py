@@ -1,5 +1,7 @@
-import bpy
 import os
+import bpy
+import bmesh
+from mathutils import Vector
 from io_mesh_ply import import_ply
 
 def find_center(mesh_name):
@@ -54,22 +56,25 @@ def draw_line(x, y, z):
 
     bm = bmesh.new()
 
-    for v_co in verts_loc:
-        bm.verts.new(v_co)
-
-    for f_idx in faces:
-        bm.faces.new([bm.verts[i] for i in f_idx])
+    origin = Vector((0, 0, 0))
+    v = Vector((x, y, z))
+    bm.verts.new(origin)
+    bm.verts.new(v)
+    bm.edges.new([bm.verts[0], bm.verts[1]])
 
     bm.to_mesh(mesh)
     mesh.update()
     
+    from bpy_extras import object_utils
+    object_utils.object_data_add(context, mesh, operator=self)
+    
 def main():
-    for mesh in bpy.data.meshes:
-        remove_mesh(mesh)
     load_original()
     
     
     
 if __name__ == '__main__':
-    main()
-    
+    for mesh in bpy.data.meshes:
+        remove_mesh(mesh)
+    #main()
+    draw_line(0.2216 * 100, 0.3302 * 100, 0.9175 * 100)
