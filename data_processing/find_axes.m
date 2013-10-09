@@ -1,5 +1,5 @@
 %% read_mesh - read data from OFF, PLY, SMF or WRL file.
-function [ axes ] = find_axes( vertices )
+function [ axes ] = find_axes( vertices, faces )
 %%
 %
 % * SYNTAX
@@ -29,8 +29,11 @@ function [ axes ] = find_axes( vertices )
 %
 % Rex Ying
 %
+sampleSize = 5000;
+indSample = perform_farthest_point_sampling_mesh(vertices, faces, [], sampleSize);
+vSample = vertices(indSample, :);
 
-C = cov(vertices);
+C = cov(vSample);
 [axes, D] = eig(C);
 latent = diag(D);
 % reverse order: from most significant component to the least significant

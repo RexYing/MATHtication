@@ -27,6 +27,6 @@ hold on;
 
 %% Find axes for upper and lower jaws
 
-axes_upper = find_axes(verts_upper);
-axes_lower = find_axes(verts_lower);
+axes_upper = find_axes(verts_upper, faces_upper);
+axes_lower = find_axes(verts_lower, faces_lower);
 
