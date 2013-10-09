@@ -22,7 +22,7 @@ function [ verts, faces ] = load_mesh( filename )
 %
 % * DEPENDENCIES
 %
-% toolbox_graph by Gabriel Peyré
+% toolbox_graph by Gabriel Peyr?
 %
 % * REFERENCES
 %
@@ -36,7 +36,7 @@ options.name = filename;
 [verts, faces]=read_mesh(filename);
 options.face_vertex_color = repmat([0.5, 0.5, 0.5], size(verts, 1), 1);
 shading interp;
-plot_mesh(verts, faces, options);
+%plot_mesh(verts, faces, options);
 
 
 % -------------------------------
