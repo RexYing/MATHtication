@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mathtication lower_jaw_name="lower_cropped-downsampled.ply" upper_jaw_name="upper_cropped-downsampled.ply">
+   <axes>
+      <axes_raw>
+         <lower>
+            <axis>0.221633,0.330170,0.917533</axis>
+            <axis>0.972354,-0.145775,-0.182419</axis>
+            <axis>0.073523,0.932597,-0.353351</axis>
+         </lower>
+         <upper>
+            <axis>0.122961,0.351667,0.928014</axis>
+            <axis>0.990253,-0.105125,-0.091371</axis>
+            <axis>0.065425,0.930204,-0.361165</axis>
+         </upper>
+      </axes_raw>
+      <axes_FM sample_size="2000">
+         <lower>
+            <axis>0.372887,0.512262,0.773656</axis>
+            <axis>0.699058,0.393178,-0.597268</axis>
+            <axis>0.610142,-0.763544,0.211490</axis>
+         </lower>
+         <upper>
+            <axis>-0.449772,-0.592653,-0.668182</axis>
+            <axis>0.889605,-0.230736,-0.394162</axis>
+            <axis>-0.079428,0.771701,-0.631006</axis>
+         </upper>
+      </axes_FM>
+   </axes>
+</mathtication>

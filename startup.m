@@ -22,6 +22,8 @@ addpath data
 % classes should be public
 javaaddpath javacode.jar
 
+clearvars addsubdir
+
 % -------------------------------
 % Date : April 15, 2013
 % Rex Ying

@@ -1,7 +1,10 @@
 import os
+import sys
+
 import bpy
 import bmesh
 from mathutils import Vector
+
 from io_mesh_ply import import_ply
 
 def find_center(mesh_name):
@@ -60,27 +63,31 @@ def load_cropped():
     upper_jaw_file = os.path.join(blend_directory, "upper_cropped.ply")
     import_ply.load_ply(upper_jaw_file)
     
+def select_layer(layer_nr):  
+    return tuple(i == layer_nr for i in range(0, 20))
     
-def draw_line(x, y, z):
-    mesh = bpy.data.meshes.new('axis1')
-
-    bm = bmesh.new()
-
-    origin = Vector((0, 0, 0))
-    v = Vector((x, y, z))
-    bm.verts.new(origin)
-    bm.verts.new(v)
-    bm.edges.new([bm.verts[0], bm.verts[1]])
-
-    bm.to_mesh(mesh)
+def draw_line(name, pt1, pt2):
+    mesh = bpy.data.meshes.new(name)
+    obj = bpy.data.objects.new(name, mesh)
+    
+    scn = bpy.context.scene
+    scn.objects.link(obj)
+    scn.objects.active = obj
+    obj.select = True
+    
+    mesh.from_pydata([pt1, pt2], [(0, 1)], [])
     mesh.update()
     
-    from bpy_extras import object_utils
-    object_utils.object_data_add(context, mesh, operator=self)
-    
+def draw_axes(coords):
+    print(coords)
+    for i in range(0, 3):
+        pt1 = [10 * coords[i * 3 + j] for j in range(0, 3)];
+        pt1 = tuple(pt1)
+        pt2 = (-num for num in pt1)
+        draw_line('axis' + str(i), pt1, pt2)
     
 def main():
-    #load_original()
+    load_original()
     degen_verts = []
     with open('degen_verts_lower', 'r') as fid:
         degen_verts = [int(x) for x in fid.readline().split()]
@@ -93,16 +100,14 @@ def main():
     
     
 if __name__ == '__main__':
-    #for mesh in bpy.data.meshes:
-    #    remove_mesh(mesh)
-    remove_mesh('lower_cropped-downsampled')
-    main()
-    #draw_line(0.2216 * 100, 0.3302 * 100, 0.9175 * 100)
-
-'''   
-def check_mid():
-    inner_prod = []
-    v = Vector((0.0735, 0.9326, -0.3534))
-    for points in bpy.data.meshes[0].vertices:
-        inner_prod.append(v.x * points.x]
-        '''
+    #remove_mesh('lower_cropped-downsampled')
+    #main()
+    sys.path.append(os.path.dirname('./'))
+    import read_jaw_data
+    
+    loader = read_jaw_data.DataLoader('jaw1.xml')
+    axes_dict = loader.load_axes()
+    
+    select_layer(3)
+    draw_axes(axes_dict['sample']['lower'])
+    

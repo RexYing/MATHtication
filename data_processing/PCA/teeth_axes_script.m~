@@ -1,0 +1,59 @@
+%% Find teeth axes script
+% 
+% Sampling
+% PCA
+%
+
+%% PCA directly on upper/lower jaw
+% Upper jaw is well cropped; the lower one is not
+%
+
+axes_upper_raw = find_axes(verts_upper);
+axes_lower_raw = find_axes(verts_lower);
+
+%% Fast Marching sampling
+sampleSize = 1000;
+indSample = perform_farthest_point_sampling_mesh(verts_upper, faces_upper, [], sampleSize);
+axes_upper_sample = find_axes(verts_upper(indSample, :));
+
+indSample = perform_farthest_point_sampling_mesh(verts_lower, faces_lower, [], sampleSize);
+axes_lower_sample = find_axes(verts_lower(indSample, :));
+
+%% Adjust
+
+
+%% Record
+docNode = com.mathworks.xml.XMLUtils.createDocument('mathtication');
+docRootNode = docNode.getDocumentElement;
+docRootNode.setAttribute('upper_jaw_name', 'upper_cropped-downsampled.ply');
+docRootNode.setAttribute('lower_jaw_name', 'lower_cropped-downsampled.ply');
+
+axesElem = docNode.createElement('axes');
+docRootNode.appendChild(axesElem);
+
+axesRawElem = docNode.createElement('axes_raw');
+axesElem.appendChild(axesRawElem);
+
+axesRawLower = docNode.createElement('lower');
+axesRawUpper = docNode.createElement('upper');
+axesRawElem.appendChild(axesRawLower);
+axesRawElem.appendChild(axesRawUpper);
+for i = 1: 3
+    % Lower Raw
+    axis = docNode.createElement(strcat('axis', int2str(i)));
+    axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
+        axes_lower_raw(:, i)) ));
+    axesRawLower.appendChild(axis);
+    
+    % Upper Raw
+    axis = docNode.createElement(strcat('axis', int2str(i)));
+    axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
+        axes_upper_raw(:, i)) ));
+    axesRawUpper.appendChild(axis);
+    
+    %
+end
+
+xmlFileName = ['data/jaw1', '.xml'];
+xmlwrite(xmlFileName, docNode);
+type(xmlFileName);
