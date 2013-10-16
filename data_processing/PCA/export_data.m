@@ -59,6 +59,28 @@ for i = 1: 3
     axesUpper.appendChild(axis);
 end
 
+%% axes adaptive cropping
+axesSubElem = docNode.createElement('axes_adaptive_crop');
+% TODO: attribute ...
+axesElem.appendChild(axesSubElem);
+axesLower = docNode.createElement('lower');
+axesUpper = docNode.createElement('upper');
+axesSubElem.appendChild(axesLower);
+axesSubElem.appendChild(axesUpper);
+for i = 1: 3
+    % Lower Raw
+    axis = docNode.createElement('axis');
+    axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
+        adacrop_lower.Aux.axis(:, i)) ));
+    axesLower.appendChild(axis);
+    
+    % Upper Raw
+    axis = docNode.createElement('axis');
+    axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
+        adacrop_upper.Aux.axis(:, i)) ));
+    axesUpper.appendChild(axis);
+end
+
 %% Output
 xmlFileName = ['data/jaw1', '.xml'];
 xmlwrite(xmlFileName, docNode);

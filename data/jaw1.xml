@@ -25,5 +25,17 @@
             <axis>-0.079428,0.771701,-0.631006</axis>
          </upper>
       </axes_FM>
+      <axes_adaptive_crop>
+         <lower>
+            <axis>1.028309,4.859902,5.790510</axis>
+            <axis>6.446802,-0.610118,-0.632792</axis>
+            <axis>0.004296,0.356591,-0.300046</axis>
+         </lower>
+         <upper>
+            <axis>7.595333,-1.012659,-1.103284</axis>
+            <axis>0.974331,3.106764,3.856012</axis>
+            <axis>0.006272,0.399084,-0.323124</axis>
+         </upper>
+      </axes_adaptive_crop>
    </axes>
 </mathtication>

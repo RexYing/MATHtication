@@ -32,10 +32,10 @@ class DataLoader:
         axes_dict = {}
         axes_dict['raw'] = self.get_axes_by_name('axes_raw');
         axes_dict['sample'] = self.get_axes_by_name('axes_FM');
+        axes_dict['adacrop'] = self.get_axes_by_name('axes_adaptive_crop');
         return axes_dict
 
 #loader = DataLoader('jaw1.xml')
 #axes_dict = loader.load_axes()
 #print(axes_dict['sample'])
 #print(axes_dict['raw'])
-

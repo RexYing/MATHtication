@@ -111,6 +111,9 @@ def pca(axes_dict):
     select_layer(5)
     draw_axes('raw_upper_', axes_dict['raw']['upper'])
     
+    select_layer(6)
+    draw_axes('adacrop_lower_', axes_dict['adacrop']['lower'])
+    
 def main():
     jaws = load_original()
     degen_verts = []
@@ -129,10 +132,9 @@ if __name__ == '__main__':
     path = os.path.join(root_dir, 'visualization', 'blender')
     sys.path.append(path)
     import read_jaw_data
-    # import xml file on the jaw beging analyzed
+    # import xml file on the jaw being analyzed
     loader = read_jaw_data.DataLoader('jaw1.xml')
-    #pca(loader.load_axes());
-    
-    
+    # display principle component axes
+    pca(loader.load_axes());
     
     
