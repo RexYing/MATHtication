@@ -15,3 +15,11 @@
 # Mex
 *.mexa64
 
+# Archive
+*.rar
+*.tar
+
+# Editor
+*.~
+*.sw?
+

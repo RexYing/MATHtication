@@ -4,6 +4,7 @@
 % sampling
 % cropped
 %
+
 docNode = com.mathworks.xml.XMLUtils.createDocument('mathtication');
 docRootNode = docNode.getDocumentElement;
 docRootNode.setAttribute('upper_jaw_name', 'upper_cropped-downsampled.ply');
@@ -35,6 +36,8 @@ end
 clearvars axesRawElem;
 
 %% axes sample 
+sampleSize = 2000;
+
 axesSubElem = docNode.createElement('axes_FM');
 axesSubElem.setAttribute('sample_size', int2str(sampleSize));
 axesElem.appendChild(axesSubElem);
