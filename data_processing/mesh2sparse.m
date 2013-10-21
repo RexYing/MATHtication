@@ -21,7 +21,7 @@ function [AdjMat] = mesh2sparse(faces)
 % Each face is represented by the indices of the vertices that form the
 % face. So the vertices that forms the triangular face are connected.
 %
-% The weight of each edge is 0
+% The weight of each edge is 1
 %
 % * DEPENDENCIES
 %
@@ -36,10 +36,10 @@ function [AdjMat] = mesh2sparse(faces)
 
 edges = computeMeshEdges(faces);
 nVerts = max(max(faces) );
-weights = ones(size(edges, 1), 1);
+weights = ones(length(edges), 1);
 i = edges(:, 1);
 j = edges(:, 2);
 AdjMat = sparse(i, j, weights, nVerts, nVerts);
-% symmetric
+% make the matrix symmetric
 AdjMat = AdjMat + AdjMat';
 

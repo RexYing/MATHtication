@@ -12,6 +12,9 @@
 *.la
 *.a
 
+# Executable
+*.exe
+
 # Mex
 *.mexa64
 

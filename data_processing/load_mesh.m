@@ -1,9 +1,10 @@
-function [ verts, faces ] = load_mesh( filename )
+function [ verts, faces, weights ] = load_mesh( filename )
 %%
 %
 % * SYNTAX
 %
 %   [ vertices, faces ] = load_mesh(filename);
+%   [ vertices, faces, weights ] = load_mesh(filename);
 %
 % * INPUT
 %
@@ -13,6 +14,7 @@ function [ verts, faces ] = load_mesh( filename )
 %
 % vertices    [N-by-3] matrix representing vertices
 % faces       [N-by-3] matrix representing faces
+% weights     [N] vector representing weights of each vertex (optional)
 %
 % * DESCRIPTION
 %
@@ -22,6 +24,7 @@ function [ verts, faces ] = load_mesh( filename )
 %
 % * DEPENDENCIES
 %
+% clean_mesh.m
 % toolbox_graph by Gabriel Peyr?
 %
 % * REFERENCES
@@ -31,17 +34,18 @@ function [ verts, faces ] = load_mesh( filename )
 % Rex Ying
 %
 
-%name = 'lower_cropped-downsampled.ply';
 options.name = filename;
 [verts, faces]=read_mesh(filename);
 options.face_vertex_color = repmat([0.5, 0.5, 0.5], size(verts, 1), 1);
 shading interp;
-%plot_mesh(verts, faces, options);
-
+plot_mesh(verts, faces, options);
+if nargout == 3
+    % find weights
+    weights = zeros(1);
+end
 
 % -------------------------------
 % Date : May 10, 2013
 % Rex Ying
 % Duke University
-% Revision :
 % ------------------------------
