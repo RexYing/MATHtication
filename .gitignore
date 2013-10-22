@@ -27,6 +27,6 @@
 *.sw?
 
 # Java
-.class
-.classpath
+*.class
+*.classpath
 doc/

@@ -6,7 +6,7 @@ function [ weights ] = mesh_weights( verts, faces )
 weights = zeros(length(verts), 1);
 for i = 1: length(faces)
     face = faces(i, :);
-    % Heron's formula
+    % Cross product
     x = verts(face(1), :);
     y = verts(face(2), :);
     z = verts(face(3), :);
