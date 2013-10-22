@@ -27,5 +27,6 @@
 *.sw?
 
 # Java
+.class
 .classpath
-
+doc/

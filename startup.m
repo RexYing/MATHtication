@@ -4,7 +4,7 @@
 % to set up path structure within this directory
 %
 
-% add directory and its subdirectory
+% function handle for adding a directory and its subdirectory
 addsubdir = @(dir) addpath(genpath(dir));
 
 %add utility routines
@@ -12,6 +12,7 @@ addsubdir('lib');
 
 % add code
 addsubdir('data_processing')
+addpath javacode
 
 % add data
 addpath data
