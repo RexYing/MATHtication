@@ -27,7 +27,7 @@ public class MeshTest {
 	public void testMeanPoint() {
 		createMesh();
 		Point3D pt = mesh.meanPointConvexHull();
-		System.out.println(pt.x + " " + pt.y + " " + pt.z);
+		System.out.println(pt.toString());
 	}
 
 	@Test

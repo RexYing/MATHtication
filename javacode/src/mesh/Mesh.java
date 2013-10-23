@@ -1,7 +1,5 @@
 package mesh;
 
-import java.util.Arrays;
-
 import org.ejml.data.DenseMatrix64F;
 import org.ejml.factory.DecompositionFactory;
 import org.ejml.factory.EigenDecomposition;

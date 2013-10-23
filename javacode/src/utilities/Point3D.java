@@ -1,86 +1,86 @@
 package utilities;
 
+import java.util.Arrays;
+
 public class Point3D {
 
-	public double x;
-	public double y;
-	public double z;
+	public double[] coords;
 
 	public Point3D(double x, double y, double z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		coords = new double[3];
+		coords[0] = x;
+		coords[1] = y;
+		coords[2] = z;
 	}
 
+	/**
+	 * the modifications on pt will affect coords at the moment
+	 * @param pt
+	 */
 	public Point3D(double[] pt) {
-		x = pt[0];
-		y = pt[1];
-		z = pt[2];
+		coords = pt;
 	}
 
 	public double euclidDist(Point3D pt) {
-		double dist = (x - pt.x) * (x - pt.x) + (y - pt.y) * (y - pt.y)
-				+ (z - pt.z) * (z - pt.z);
+		double dist = 0;
+		for (int i = 0; i < 3; i++) {
+			dist += (coords[i] - pt.get(i)) * (coords[i] - pt.get(i));
+		}
 		return Math.sqrt(dist);
 	}
 
 	public double manhattanDist(Point3D pt) {
-		return Math.abs(x - pt.x) + Math.abs(y - pt.y) + Math.abs(z - pt.z);
+		double dist = 0;
+		for (int i = 0; i < 3; i++) {
+			dist += Math.abs(coords[i] - pt.get(i));
+		}
+		return dist;
 	}
 
 	public Point3D add(Point3D... points) {
-		double sumX = x, sumY = y, sumZ = z;
+		double[] newCoords = Arrays.copyOf(coords, 3);
 		for (Point3D pt : points) {
-			sumX += pt.x;
-			sumY += pt.y;
-			sumZ += pt.z;
+			for (int i = 0; i < 3; i++)
+				newCoords[i] += pt.get(i);
 		}
-		return new Point3D(sumX, sumY, sumZ);
+		return new Point3D(newCoords);
 	}
 
 	public Point3D minus(Point3D... points) {
-		double sumX = x, sumY = y, sumZ = z;
+		double[] newCoords = Arrays.copyOf(coords, 3);
 		for (Point3D pt : points) {
-			sumX -= pt.x;
-			sumY -= pt.y;
-			sumZ -= pt.z;
+			for (int i = 0; i < 3; i++)
+				newCoords[i] -= pt.get(i);
 		}
-		return new Point3D(sumX, sumY, sumZ);
+		return new Point3D(newCoords);
 	}
 
 	public void scale(double scaleVal) {
-		x *= scaleVal;
-		y *= scaleVal;
-		z *= scaleVal;
+		for (int i = 0; i < 3; i++)
+			coords[i] *= scaleVal;
 	}
 
 	public void scaleDown(double scaleVal) {
-		x /= scaleVal;
-		y /= scaleVal;
-		z /= scaleVal;
+		for (int i = 0; i < 3; i++)
+			coords[i] /= scaleVal; 
 	}
 
 	public double getX() {
-		return x;
+		return coords[0];
 	}
 
 	public double getY() {
-		return y;
+		return coords[1];
 	}
 
 	public double getZ() {
-		return z;
+		return coords[2];
 	}
 
 	public double get(int dim) {
-		switch (dim) {
-		case 0:
-			return x;
-		case 1:
-			return y;
-		case 2:
-			return z;
-		default:
+		if ((dim >= 0) && (dim < 3))
+			return coords[dim];
+		else {
 			System.err.println("Dimension " + dim
 					+ " should be no more than 2 and no less than 0!");
 			return Double.NaN;
@@ -89,6 +89,6 @@ public class Point3D {
 
 	@Override
 	public String toString() {
-		return String.format("(%f, %f, %f) ", x, y, z);
+		return String.format("(%f, %f, %f) ", coords[0], coords[1], coords[2]);
 	}
 }
