@@ -13,6 +13,7 @@ addsubdir('lib');
 % add code
 addsubdir('data_processing')
 addpath javacode
+addpath javacode/lib
 
 % add data
 addpath data
@@ -22,6 +23,7 @@ addpath data
 % sure there is no version incompatibility
 % classes should be public
 javaaddpath javacode.jar
+javaaddpath javacode/lib/ejml-0.23.jar
 
 clearvars addsubdir
 

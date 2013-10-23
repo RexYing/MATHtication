@@ -29,4 +29,6 @@
 # Java
 *.class
 *.classpath
-doc/
+*/doc/
+*/bin/
+

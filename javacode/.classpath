@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/MatlabJRE"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/matrix"/>
-	<classpathentry kind="lib" path="C:/MATHtication/javacode/lib/texdoclet.jar"/>
+	<classpathentry kind="lib" path="/home/home3/zy26/workspace/MATHtication/javacode/lib/texdoclet.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/matrix"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

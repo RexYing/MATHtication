@@ -37,6 +37,16 @@ public class Point3D {
 		return new Point3D(sumX, sumY, sumZ);
 	}
 	
+	public Point3D minus(Point3D... points) {
+		double sumX = x, sumY = y, sumZ = z;
+		for (Point3D pt: points) {
+			sumX -= pt.x;
+			sumY -= pt.y;
+			sumZ -= pt.z;
+		}
+		return new Point3D(sumX, sumY, sumZ);
+	}
+	
 	public void scale(double scaleVal) {
 		x *= scaleVal;
 		y *= scaleVal;
@@ -59,6 +69,20 @@ public class Point3D {
 	
 	public double getZ() {
 		return z;
+	}
+	
+	public double get(int dim) {
+		switch (dim) {
+		case 0:
+			return x;
+		case 1:
+			return y;
+		case 2:
+			return z;
+		default:
+			System.err.println("Dimension " + dim + " should be no more than 2 and no less than 0!");
+			return Double.NaN;
+		}
 	}
 	
 	@Override
