@@ -8,15 +8,15 @@ import utilities.Point3D;
 import mesh.Mesh;
 
 public class MeshTest {
-	
+
 	Mesh mesh;
-	
+
 	public void createMesh() {
 		double[][] vertices = new double[3][3];
-		vertices[0] = new double[] {0, 0, 0};
-		vertices[1] = new double[] {0, 2, 0};
-		vertices[2] = new double[] {0, 0, 1};
-			
+		vertices[0] = new double[] { 0, 0, 0 };
+		vertices[1] = new double[] { 0, 2, 0 };
+		vertices[2] = new double[] { 0, 0, 1 };
+
 		int[][] faces = new int[1][3];
 		for (int i = 0; i < 3; i++)
 			faces[0][i] = i + 1;
@@ -29,7 +29,7 @@ public class MeshTest {
 		Point3D pt = mesh.meanPointConvexHull();
 		System.out.println(pt.x + " " + pt.y + " " + pt.z);
 	}
-	
+
 	@Test
 	public void testPoint() {
 		double epsilon = 0.00000001;

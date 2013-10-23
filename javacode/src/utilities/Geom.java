@@ -1,18 +1,20 @@
 package utilities;
 
 public class Geom {
-	
 
-	
 	/**
 	 * calculate area of triangle
-	 * @param pt1 point 1
-	 * @param pt2 point 2
-	 * @param pt3 point 3
+	 * 
+	 * @param pt1
+	 *            point 1
+	 * @param pt2
+	 *            point 2
+	 * @param pt3
+	 *            point 3
 	 * @return area
 	 */
 	public static double triangleArea(Point3D pt1, Point3D pt2, Point3D pt3) {
-	    // heron's formula
+		// heron's formula
 		double[] sides = new double[3];
 		double p = 0;
 		sides[0] = pt1.euclidDist(pt2);
