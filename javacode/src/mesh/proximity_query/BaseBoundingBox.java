@@ -1,6 +1,8 @@
 package mesh.proximity_query;
 
+import mesh.Mesh;
 import utilities.Point3D;
+import utilities.Triangle;
 
 /**
  * Basic bounding box that only contains 1 triangle
@@ -9,11 +11,12 @@ import utilities.Point3D;
  */
 public class BaseBoundingBox extends BoundingBox {
 
-	public BaseBoundingBox(Point3D[] vertices) {
-		super(vertices);
-		// TODO Auto-generated constructor stub
-	}
+	private Triangle myFace;
 	
+	public BaseBoundingBox(Mesh mesh) {
+		super(mesh);
+		myFace = mesh.getFaces()[0];
+	}
 	
 
 }

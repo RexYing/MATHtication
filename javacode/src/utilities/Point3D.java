@@ -2,15 +2,23 @@ package utilities;
 
 import java.util.Arrays;
 
-public class Point3D {
+import org.ejml.data.DenseMatrix64F;
 
+public class Point3D extends DenseMatrix64F{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5928156031910094416L;
 	public double[] coords;
 
 	public Point3D(double x, double y, double z) {
+		super(new double[][]{{x, y, z}});
 		coords = new double[3];
 		coords[0] = x;
 		coords[1] = y;
 		coords[2] = z;
+		
 	}
 
 	/**
@@ -18,6 +26,7 @@ public class Point3D {
 	 * @param pt
 	 */
 	public Point3D(double[] pt) {
+		super(new double[][]{pt});
 		coords = pt;
 	}
 
@@ -54,6 +63,10 @@ public class Point3D {
 		}
 		return new Point3D(newCoords);
 	}
+	
+	public double dotProduct(Point3D pt) {
+		return coords[0] * pt.get(0) + coords[1] * pt.get(1) + coords[2] * pt.get(2);
+	}
 
 	public void scale(double scaleVal) {
 		for (int i = 0; i < 3; i++)
@@ -75,6 +88,10 @@ public class Point3D {
 
 	public double getZ() {
 		return coords[2];
+	}
+	
+	public double[] getCoords() {
+		return coords;
 	}
 
 	public double get(int dim) {
