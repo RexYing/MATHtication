@@ -98,7 +98,8 @@ public class Mesh {
 		double[][] cov = new double[3][3];
 		Point3D[] normVerts = new Point3D[myVertices.length];
 		for (int i = 0; i < normVerts.length; i++) {
-			normVerts[i] = myVertices[i].minus(myMeanPoint);
+			normVerts[i] = myVertices[i].clone();
+			normVerts[i].minus(myMeanPoint);
 		}
 		for (int i = 0; i < 3; i++)
 			for (int j = i; j < 3; j++) {
