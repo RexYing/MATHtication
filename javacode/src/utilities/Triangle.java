@@ -27,4 +27,23 @@ public class Triangle {
 		return Math.sqrt(p * (p - sides[0]) * (p - sides[1]) * (p - sides[2]));
 	}
 
+	public boolean isIntersect(Triangle tri) {
+		Triangle tr1 = clone();
+		Triangle tr2 = tri.clone();
+		return true;
+	}
+	
+	@Override
+	public Triangle clone() {
+		Point3D[] newPoints = new Point3D[3];
+		for (int i = 0; i < 3; i++)
+			newPoints[i] = points[i].clone();
+		return new Triangle(newPoints);
+	}
+	
+	public void move(Vector3D v) {
+		for (Point3D pt: points) {
+			pt.add(v);
+		}
+	}
 }

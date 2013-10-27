@@ -7,6 +7,7 @@ import org.ejml.ops.EigenOps;
 
 import utilities.Geom;
 import utilities.Point3D;
+import utilities.Vector3D;
 
 public class Mesh {
 
@@ -49,14 +50,15 @@ public class Mesh {
 			return myMeanPoint;
 		if (myAreas == null)
 			calculateAreas();
-		myMeanPoint = new Point3D(0, 0, 0);
+		Vector3D v = new Point3D(0, 0, 0);
 		for (int i = 0; i < myFaces.length; i++) {
-			Point3D sum = myVertices[myFaces[i][0]].add(
-					myVertices[myFaces[i][1]], myVertices[myFaces[i][2]]);
+			Vector3D sum = myVertices[myFaces[i][0]].clone();
+			sum.add(myVertices[myFaces[i][1]], myVertices[myFaces[i][2]]);
 			// sum.scaleDown(myAreas[i]);
-			myMeanPoint = myMeanPoint.add(sum);
+			v.add(sum);
 		}
-		myMeanPoint.scaleDown(6 * myFaces.length);
+		v.scaleDown(6 * myFaces.length);
+		myMeanPoint = new Point3D(v);
 		return myMeanPoint;
 	}
 
@@ -76,12 +78,13 @@ public class Mesh {
 	public Point3D meanPoint() {
 		if (myMeanPoint != null)
 			return myMeanPoint;
-		myMeanPoint = new Point3D(0, 0, 0);
+		Vector3D v = new Vector3D(0, 0, 0);
+		//myMeanPoint = new Point3D(0, 0, 0);
 		for (int i = 0; i < myFaces.length; i++) {
-			myMeanPoint = myMeanPoint.add(myVertices[myFaces[i][0]],
-					myVertices[myFaces[i][1]], myVertices[myFaces[i][2]]);
+			v.add(myVertices[myFaces[i][0]], myVertices[myFaces[i][1]], myVertices[myFaces[i][2]]);
 		}
-		myMeanPoint.scaleDown(3 * myFaces.length);
+		v.scaleDown(3 * myFaces.length);
+		myMeanPoint = new Point3D(v);
 		return myMeanPoint;
 	}
 
