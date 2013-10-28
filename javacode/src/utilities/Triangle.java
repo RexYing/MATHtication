@@ -62,7 +62,19 @@ public class Triangle {
 	}
 	
 	private boolean project6(Vector3D axis, Triangle tr) {
-		 return true;
+		double[] projection1 = new double[3];
+		double[] projection2 = new double[3];
+		for (int i = 0; i < 3; i++) {
+			projection1[i] = axis.dotProduct(getVertex(i));
+			projection2[i] = axis.dotProduct(tr.getVertex(i));
+		}
+		double max1 = Math.max(Math.max(projection1[0], projection1[1]), projection1[2]);
+		double min1 = Math.min(Math.min(projection1[0], projection1[1]), projection1[2]);
+		double max2 = Math.max(Math.max(projection2[0], projection2[1]), projection2[2]);
+		double min2 = Math.min(Math.min(projection2[0], projection2[1]), projection2[2]);
+		if ((min1 > max2) || (min2 > max1))
+			return false;
+		return true;
 	}
 
 	public boolean isIntersect(Triangle tri) {

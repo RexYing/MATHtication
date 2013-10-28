@@ -42,6 +42,10 @@ public class Vector3D {
 		prodCoords[2] = coords[0] * v.get(1) - coords[1] - v.get(0);
 		return new Vector3D(prodCoords);
 	}
+	
+	public double dotProduct(Vector3D v) {
+		return coords[0] * v.get(0) + coords[1] * v.get(1) + coords[2] * v.get(2);
+	}
 
 	public void scale(double scaleVal) {
 		for (int i = 0; i < 3; i++)
