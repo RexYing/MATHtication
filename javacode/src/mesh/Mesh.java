@@ -8,6 +8,7 @@ import org.ejml.ops.EigenOps;
 
 import utilities.Point3D;
 import utilities.Triangle;
+import utilities.Vector3D;
 
 public class Mesh {
 
@@ -24,6 +25,7 @@ public class Mesh {
 
 		myFaces = new Triangle[faces.length];
 		// change indexing to 0-based
+		// vertices index in faces array starts from 1 (for MATLAB)
 		for (int i = 0; i < myFaces.length; i++)
 			myFaces[i] = new Triangle(new Point3D[] { myVertices[faces[i][0] - 1], myVertices[faces[i][1] - 1],
 					myVertices[faces[i][2] - 1] });
@@ -51,13 +53,14 @@ public class Mesh {
 	public Point3D meanPointConvexHull() {
 		if (myMeanPoint != null)
 			return myMeanPoint;
-		myMeanPoint = new Point3D(0, 0, 0);
+		Vector3D v = new Point3D(0, 0, 0);
 		for (int i = 0; i < myFaces.length; i++) {
-			Point3D sum = myFaces[i].vectorSum();
-			// sum.scaleDown(myFaces[i].getArea());
-			myMeanPoint = myMeanPoint.add(sum);
+			Vector3D sum = myFaces[i].vectorSum();
+			// sum.scaleDown(myAreas[i]);
+			v.add(sum);
 		}
-		myMeanPoint.scaleDown(6 * myFaces.length);
+		v.scaleDown(6 * myFaces.length);
+		myMeanPoint = new Point3D(v);
 		return myMeanPoint;
 	}
 
@@ -69,11 +72,14 @@ public class Mesh {
 	public Point3D meanPoint() {
 		if (myMeanPoint != null)
 			return myMeanPoint;
-		myMeanPoint = new Point3D(0, 0, 0);
+		Vector3D v = new Vector3D(0, 0, 0);
+		//myMeanPoint = new Point3D(0, 0, 0);
 		for (int i = 0; i < myFaces.length; i++) {
-			myMeanPoint = myMeanPoint.add(myFaces[i].vectorSum());
+			v.add(myFaces[i].vectorSum());
 		}
-		myMeanPoint.scaleDown(3 * myFaces.length);
+		System.out.println(v.toString());
+		v.scaleDown(3 * myFaces.length);
+		myMeanPoint = new Point3D(v);
 		return myMeanPoint;
 	}
 	
@@ -88,7 +94,9 @@ public class Mesh {
 		meanPoint();
 		double[][] normVerts = new double[myVertices.length][3];
 		for (int i = 0; i < normVerts.length; i++) {
-			normVerts[i] = myVertices[i].minus(myMeanPoint).coords;
+			Vector3D v = myVertices[i].clone();
+			v.minus(myMeanPoint);
+			normVerts[i] = v.getCoords();
 		}
 		/*
 		for (int i = 0; i < 3; i++)
@@ -125,6 +133,7 @@ public class Mesh {
 		// DenseMatrix64F D = EigenOps.createMatrixD(covEig);
 		DenseMatrix64F[] eigVectors = new DenseMatrix64F[3];
 		CommonOps.columnsToVector(V, eigVectors);
+		
 		// sort 3 elements for efficiency (descending)
 		if (covEig.getEigenvalue(0).real < covEig.getEigenvalue(1).real) 
 			swap(eigVectors, 0, 1);

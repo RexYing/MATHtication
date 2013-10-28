@@ -29,6 +29,7 @@
 # Java
 *.class
 *.classpath
+*.jar
 */doc/
 */bin/
 
