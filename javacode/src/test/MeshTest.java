@@ -8,6 +8,7 @@ import org.junit.Test;
 import utilities.Point3D;
 import utilities.Triangle;
 import mesh.Mesh;
+import mesh.proximity_query.BoundingBox;
 
 public class MeshTest {
 
@@ -17,7 +18,7 @@ public class MeshTest {
 		double[][] vertices = new double[3][3];
 		vertices[0] = new double[] { 0, 0, 0 };
 		vertices[1] = new double[] { 0, 2, 0 };
-		vertices[2] = new double[] { 0, 0, 1 };
+		vertices[2] = new double[] { 1, 0, 0 };
 
 		int[][] faces = new int[1][3];
 		for (int i = 0; i < 3; i++)
@@ -43,10 +44,15 @@ public class MeshTest {
 	@Test
 	public void testTriangle() {
 		double[][] triCoords = new double[][] {{0, 0, 0}, {1, 0, 0}, {0, 1, 0}};
-		System.out.println(triCoords.length + "   " + triCoords[0].length);
 		Triangle tr1 = new Triangle(triCoords);
 		triCoords = new double[][] {{1, 0, -1}, {3, 0, 0}, {3, 0, 3}};
 		Triangle tr2 = new Triangle(triCoords);
 		Assert.assertTrue(!tr1.isIntersect(tr2));
+	}
+	
+	@Test
+	public void testBoundingBox() {
+		createMesh();
+		BoundingBox bb = new BoundingBox(mesh);
 	}
 }

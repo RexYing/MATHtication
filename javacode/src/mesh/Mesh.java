@@ -150,4 +150,8 @@ public class Mesh {
 		vec[ind1] = vec[ind2];
 		vec[ind2] = temp;
 	}
+	
+	public int getNumFaces() {
+		return myFaces.length;
+	}
 }
