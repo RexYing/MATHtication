@@ -1,10 +1,12 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import junit.framework.Assert;
 
 import org.junit.Test;
 
 import utilities.Point3D;
+import utilities.Triangle;
 import mesh.Mesh;
 
 public class MeshTest {
@@ -27,7 +29,7 @@ public class MeshTest {
 	public void testMeanPoint() {
 		createMesh();
 		Point3D pt = mesh.meanPointConvexHull();
-		System.out.println(pt.toString());
+		//System.out.println(pt.toString());
 	}
 
 	@Test
@@ -36,5 +38,15 @@ public class MeshTest {
 		Point3D pt1 = new Point3D(0, 0, 0);
 		Point3D pt2 = new Point3D(0, 2, 0);
 		assertEquals(2.0, pt1.euclidDist(pt2), epsilon);
+	}
+	
+	@Test
+	public void testTriangle() {
+		double[][] triCoords = new double[][] {{0, 0, 0}, {1, 0, 0}, {0, 1, 0}};
+		System.out.println(triCoords.length + "   " + triCoords[0].length);
+		Triangle tr1 = new Triangle(triCoords);
+		triCoords = new double[][] {{1, 0, -1}, {3, 0, 0}, {3, 0, 3}};
+		Triangle tr2 = new Triangle(triCoords);
+		Assert.assertTrue(!tr1.isIntersect(tr2));
 	}
 }

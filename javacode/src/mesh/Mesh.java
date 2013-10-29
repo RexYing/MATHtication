@@ -123,7 +123,7 @@ public class Mesh {
 	 * Principle components of the mesh
 	 * The first column is the most significant 
 	 * 
-	 * @return each column of the returned matrix is a component
+	 * @return each column of the returned matrix is a component (most significant to least significant)
 	 */
 	public DenseMatrix64F[] getPrinComp() {
 		DenseMatrix64F cov = getCovMat();
