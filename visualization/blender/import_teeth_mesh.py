@@ -127,14 +127,19 @@ def main():
     
 if __name__ == '__main__':
     #remove_mesh('lower_cropped-downsampled')
-    main()
+    #main()
     
     path = os.path.join(root_dir, 'visualization', 'blender')
     sys.path.append(path)
     import read_jaw_data
     # import xml file on the jaw being analyzed
-    loader = read_jaw_data.DataLoader('jaw1.xml')
+    #loader = read_jaw_data.DataLoader('jaw1.xml')
     # display principle component axes
-    pca(loader.load_axes());
+    #pca(loader.load_axes());
     
+    #draw special line. TODO: automate them
+    select_layer(0)
+    draw_line('tryline', (11.187, 5.251, 9.077), (-6.182, 7.334, 11.308))
+    draw_line('molar3line', (9.84, 4.07, 4.54), (-7.43, 6.33, 6.56))
+    draw_line('condilesline', (20.9, 3.73, 23.2), (-9.66, 8.054, 27.454))
     
