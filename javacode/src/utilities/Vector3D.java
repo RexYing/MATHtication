@@ -35,12 +35,25 @@ public class Vector3D {
 		}
 	}
 	
+	public Vector3D minusNew(Vector3D... vecs) {
+		double[] newCoords = Arrays.copyOf(coords, 3);
+		for (Vector3D v : vecs) {
+			for (int i = 0; i < 3; i++)
+				newCoords[i] -= v.get(i);
+		}
+		return new Vector3D(newCoords);
+	}
+	
 	public Vector3D crossProduct(Vector3D v) {
 		double[] prodCoords = new double[3];
 		prodCoords[0] = coords[1] * v.get(2) - coords[2] * v.get(1);
 		prodCoords[1] = -(coords[0] * v.get(2) - coords[2] * v.get(0));
 		prodCoords[2] = coords[0] * v.get(1) - coords[1] - v.get(0);
 		return new Vector3D(prodCoords);
+	}
+	
+	public double dotProduct(Vector3D v) {
+		return coords[0] * v.get(0) + coords[1] * v.get(1) + coords[2] * v.get(2);
 	}
 
 	public void scale(double scaleVal) {

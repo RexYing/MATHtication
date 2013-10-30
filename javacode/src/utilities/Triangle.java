@@ -8,11 +8,17 @@ public class Triangle {
 	private Vector3D normal;
 	
 	public Triangle(Point3D[] pts) {
+		if (pts.length != 3) {
+			System.err.println("Wrong number of dimensions!");
+			throw new RuntimeException("wrong dimension");
+		}
+			
 		points = pts;
 		myArea = triangleArea();
 	}
 	
 	public Triangle(double[][] pts) {
+		points = new Point3D[3];
 		for (int i = 0; i < 3; i++) {
 			points[i] = new Point3D(pts[i][0], pts[i][1], pts[i][2]);
 		}
@@ -61,10 +67,35 @@ public class Triangle {
 		return sum;
 	}
 	
+	/**
+	 * Test intersect by using axis (there could be false positive but no false negative)
+	 * @param axis separation axis
+	 * @param tr the other triangle
+	 * @return false if they definitely do not intersect according to axis
+	 */
 	private boolean project6(Vector3D axis, Triangle tr) {
-		 return true;
+		double[] projection1 = new double[3];
+		double[] projection2 = new double[3];
+		for (int i = 0; i < 3; i++) {
+			projection1[i] = axis.dotProduct(getVertex(i));
+			projection2[i] = axis.dotProduct(tr.getVertex(i));
+		}
+		double max1 = Math.max(Math.max(projection1[0], projection1[1]), projection1[2]);
+		double min1 = Math.min(Math.min(projection1[0], projection1[1]), projection1[2]);
+		double max2 = Math.max(Math.max(projection2[0], projection2[1]), projection2[2]);
+		double min2 = Math.min(Math.min(projection2[0], projection2[1]), projection2[2]);
+		
+		if ((min1 > max2) || (min2 > max1))
+			return false;
+		// might intersect
+		return true;
 	}
 
+	/**
+	 * test if triangles intersect by performing 17 separation axis projection tests
+	 * @param tri
+	 * @return
+	 */
 	public boolean isIntersect(Triangle tri) {
 		Triangle tr1 = clone();
 		Triangle tr2 = tri.clone();
@@ -78,13 +109,27 @@ public class Triangle {
 		Vector3D no1[] = tr1.calcNormalOutwards();
 		Vector3D no2[] = tr2.calcNormalOutwards();
 		Vector3D ef[][] = new Vector3D[3][3];
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++)
+				ef[i][j] = no1[i].crossProduct(no2[j]);
+		}
+		
+		//series of tests
+		if (!tr1.project6(tr1.getNormal(), tr2)) return false;
+		if (!tr1.project6(tr2.getNormal(), tr2)) return false;
+
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				ef[i][j] = no1[i].crossProduct(no2[i]);
+				if (!tr1.project6(ef[i][j], tr2))
+					return false;
 		
-		
-		// begin the series of tests
-		
+		for (int i = 0; i < 3; i++) {
+			if (!tr1.project6(no1[i], tr2))
+				return false;
+			if (!tr1.project6(no2[i], tr2))
+				return false;
+		}
+		// passes all tests, must be intersecting
 		return true;
 	}
 	
@@ -92,7 +137,7 @@ public class Triangle {
 		Vector3D[] result = new Vector3D[3];
 		for (int i = 0; i < 3; i++)
 			result[i] = normal.crossProduct(edges[i]);
-		return null;
+		return result;
 	}
 
 	@Override
