@@ -1,0 +1,13 @@
+function [ class ] = break2parts( vals )
+% break 1 D array into 2 parts according to their value
+
+class = zeros(size(vals));
+maxBreak = max(vals[2: end] - vals[1: end - 1];
+for i = 2: length(vals)
+    if vals(i) - vals(i - 1) > maxBreak
+        maxBreak = vals(i) - vals(i-1);
+    end
+end
+
+end
+

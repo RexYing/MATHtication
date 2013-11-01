@@ -1,6 +1,7 @@
 %% Initial condition
 % run_java
-% mesh1 = Mesh(verts_lower, faces_lower);
+
+cd % mesh1 = Mesh(verts_lower, faces_lower);
 % mp_lower = mesh1.meanPoint;
 % clearvars mesh1;
 % mesh2 = Mesh(verts_upper, faces_upper);
@@ -59,6 +60,7 @@ for i = 1: 10
     end
 end
         
+fprintf('%f - %f range (original) \n', lower_bound, upper_bound);
 
 % symmetry plane aligned
 intersects = pqp_intersect(obj_upper, obj_lower, basisTransMat, [0; 0; 0], 1);
@@ -66,9 +68,24 @@ fprintf('Number of bad faces after face alignment: %d\n', length(intersects) - 1
 
 vertical_axis = axes_lower_cropped(:, 3);
 max_ratio = 1.5;
-intersects = pqp_intersect(obj_upper, obj_lower, basisTransMat, ...
-    vertical_axis * -max_ratio, 1);
+%intersects = pqp_intersect(obj_upper, obj_lower, basisTransMat, ...
+%    vertical_axis * -max_ratio, 1);
 
+lower_bound = 0;
+upper_bound = max_ratio;
+for i = 1: 10
+    mid = (upper_bound + lower_bound) / 2;
+    
+    intersects = pqp_intersect(obj_upper, obj_lower, basisTransMat, ...
+        vertical_axis * -mid, 1);
+    if (isempty(intersects))
+        upper_bound = mid;
+    else
+        lower_bound = mid;
+    end
+end
+
+fprintf('%f - %f range for symmetry-aligned\n', lower_bound, upper_bound);
 
 %% Try rotate
 
@@ -77,7 +94,7 @@ verts_upper = verts_upper - repmat(vertical_axis' * -upper_bound, length(verts_u
 pqp_deletemodel(obj_upper);
 obj_upper = pqp_createmodel(verts_upper', faces_upper');
 
-transMat = createRotation3dLineAngle(molar3line, pi / 360);
+transMat = createRotation3dLineAngle(condilesline, pi / 360);
 intersects = pqp_intersect(obj_lower, obj_upper, transMat(1:3, 1:3), ...
     transMat(1: 3, 4), 1);
 

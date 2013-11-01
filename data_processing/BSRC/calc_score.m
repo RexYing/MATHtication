@@ -4,7 +4,7 @@ function [ score ] = calc_score( obj1, obj2, R, T )
 % translation T
 
 intersectFaces = pqp_intersect(obj1,obj2, R, T, 1);
-if isEmpty(intersectFaces)
+if isempty(intersectFaces)
     score = pqp_distance(obj1, obj2,eye(3),[100 0 0]');
 else
     score = -length(intersectFaces);
