@@ -34,3 +34,6 @@
 */doc/
 */bin/
 
+# data files
+*.csv
+

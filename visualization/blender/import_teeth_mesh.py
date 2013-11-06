@@ -51,7 +51,7 @@ def load_jaw_from_ply(filename):
 
 ## TODO: jaw class
 def load_original():
-    jaw_names = ('lower_cropped-downsampled', 'upper_cropped-downsampled')
+    jaw_names = ('lower_cleaned', 'upper_cropped-downsampled')
     # Move object center of the mesh to the center of its geometry
     layer = 0
     for name in jaw_names:
@@ -116,14 +116,31 @@ def pca(axes_dict):
     
 def main():
     jaws = load_original()
-    degen_verts = []
-    with open('degen_verts_lower', 'r') as fid:
-        degen_verts = [int(x) for x in fid.readline().split()]
-        
-    for i in range(0, len(degen_verts)):
-        print(degen_verts[i])
-           
+    degen_verts = []    
     
+    path = os.path.join(root_dir, 'visualization', 'blender')
+    sys.path.append(path)
+    import read_jaw_data
+    # import xml file on the jaw being analyzed
+    loader = read_jaw_data.DataLoader('jaw1.xml')
+    # display principle component axes
+    pca(loader.load_axes());
+          
+def paint_inds(inds):
+    for obj in bpy.data.objects:
+        obj.select = False
+    obj = bpy.data.objects['upper_cropped-downsampled']
+    obj.select = True
+    bpy.ops.object.editmode_toggle()
+    
+    print(inds[1] == [1])
+    for i in range(len(inds)):
+        if (inds[i] == 1):
+            obj.data.polygons[i].select = True
+    obj.active_material_index = 1
+    bpy.ops.object.material_slot_assign()
+        
+    bpy.ops.object.editmode_toggle()
     
 if __name__ == '__main__':
     #remove_mesh('lower_cropped-downsampled')
@@ -132,14 +149,15 @@ if __name__ == '__main__':
     path = os.path.join(root_dir, 'visualization', 'blender')
     sys.path.append(path)
     import read_jaw_data
-    # import xml file on the jaw being analyzed
-    #loader = read_jaw_data.DataLoader('jaw1.xml')
-    # display principle component axes
-    #pca(loader.load_axes());
+    loader = read_jaw_data.DataLoader('jaw1.xml')
+    inds = loader.load_inds('f_lower_inds.csv')
+    paint_inds(inds)
     
+    
+    '''
     #draw special line. TODO: automate them
     select_layer(0)
-    draw_line('tryline', (11.187, 5.251, 9.077), (-6.182, 7.334, 11.308))
-    draw_line('molar3line', (9.84, 4.07, 4.54), (-7.43, 6.33, 6.56))
+    draw_line('molar3line', (11.187, 5.251, 9.077), (-6.182, 7.334, 11.308))
     draw_line('condilesline', (20.9, 3.73, 23.2), (-9.66, 8.054, 27.454))
+    '''
     
