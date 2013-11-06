@@ -113,10 +113,11 @@ def pca(axes_dict):
     
     select_layer(6)
     draw_axes('adacrop_lower_', axes_dict['adacrop']['lower'])
+    select_layer(7)
+    draw_axes('adacrop_upper_', axes_dict['adacrop']['upper'])
     
 def main():
-    jaws = load_original()
-    degen_verts = []    
+    #jaws = load_original()
     
     path = os.path.join(root_dir, 'visualization', 'blender')
     sys.path.append(path)
@@ -124,7 +125,10 @@ def main():
     # import xml file on the jaw being analyzed
     loader = read_jaw_data.DataLoader('jaw1.xml')
     # display principle component axes
-    pca(loader.load_axes());
+    #pca(loader.load_axes());
+    inds = loader.load_inds('f_upper_inds.csv')
+    paint_inds(inds)
+
           
 def paint_inds(inds):
     for obj in bpy.data.objects:
@@ -133,25 +137,21 @@ def paint_inds(inds):
     obj.select = True
     bpy.ops.object.editmode_toggle()
     
-    print(inds[1] == [1])
+    #deselect everything first
+    for i in range(len(obj.data.polygons)):
+        obj.data.polygons[i].select = False
+    
     for i in range(len(inds)):
         if (inds[i] == 1):
             obj.data.polygons[i].select = True
-    obj.active_material_index = 1
+    bpy.context.object.active_material_index = 1
     bpy.ops.object.material_slot_assign()
         
     bpy.ops.object.editmode_toggle()
     
 if __name__ == '__main__':
     #remove_mesh('lower_cropped-downsampled')
-    #main()
-    
-    path = os.path.join(root_dir, 'visualization', 'blender')
-    sys.path.append(path)
-    import read_jaw_data
-    loader = read_jaw_data.DataLoader('jaw1.xml')
-    inds = loader.load_inds('f_lower_inds.csv')
-    paint_inds(inds)
+    main()
     
     
     '''

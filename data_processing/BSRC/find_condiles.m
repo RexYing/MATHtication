@@ -1,4 +1,4 @@
-function [ vertexInds, faceInds ] = find_condiles( verts, faces, axis )
+function [ verts_type, faces_type ] = find_condiles( verts, faces, axis )
 % 
 % given verts and axes in order (post-ant, lateral, vertical)
 % indices of condiles (left: 1, right: 2)
@@ -17,24 +17,24 @@ end
 % vals(ind + 1) - vals(ind) is the maximum
 [~, ind] = max(vals(2: end) - vals(1: end - 1));
 
-vertexInds = zeros(length(verts), 1);
+verts_type = zeros(length(verts), 1);
 % Now use size to determine which side is the condile
 % Should not be a problem because condiles should always be smaller in size
 % than tooth rows
 if ind > length(vals) / 2
     for i = ind + 1: length(vals)
-        vertexInds(inds(i)) = 1;
+        verts_type(inds(i)) = 1;
     end
 else
     for i = 1: ind
-        vertexInds(inds(i)) = 1;
+        verts_type(inds(i)) = 1;
     end
 end
 
-faceInds = zeros(length(faces), 1);
+faces_type = zeros(length(faces), 1);
 for i = 1: length(faces)
-    if (vertexInds(faces(i, 1)) == 1)
-        faceInds(i) = 1;
+    if (verts_type(faces(i, 1)) == 1)
+        faces_type(i) = 1;
     end
 end
 

@@ -71,13 +71,15 @@ for i = 1: 3
     % Lower Raw
     axis = docNode.createElement('axis');
     axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
-        adacrop_lower.Aux.axis(:, i)) ));
+        axes_lower_cropped(:, i)) ));
+    %adacrop_lower.Aux.axis(:, i)) ));
     axesLower.appendChild(axis);
     
     % Upper Raw
     axis = docNode.createElement('axis');
     axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
-        adacrop_upper.Aux.axis(:, i)) ));
+        axes_upper_cropped(:, i)) ));
+    %adacrop_upper.Aux.axis(:, i)) ));
     axesUpper.appendChild(axis);
 end
 
