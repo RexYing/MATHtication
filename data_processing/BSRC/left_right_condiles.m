@@ -3,7 +3,7 @@ function [ verts_type ] = left_right_condiles( condile_verts, axes, verts_type )
 % given the condile indices, separate them into 2 groups, each of which
 % represents a condile.
 %
-% The right condile is on the right side of the symmetry plane if facing in
+% The right condile is on the right side of the symmetry plane (raw) if facing in
 % the direction of the posterior-anterior axis
 % For right condile, verts_type is 1; left condile, verts_type is 2
 %

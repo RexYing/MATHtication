@@ -1,4 +1,4 @@
-function [ output_args ] = find_orientation( verts, axes )
+function [ output_args ] = find_orientation( verts, axes, verts_type )
 %
 % Axes in the order of post-anterior; lateral; vertical
 % the result will be 3 vectors each of which is the same or the opposite of
@@ -9,7 +9,9 @@ function [ output_args ] = find_orientation( verts, axes )
 % vertical coordinate values than 
 %
 
-%%Find 
+% Find the direction of posterior-anterior axis
+
+
 
 end
 
