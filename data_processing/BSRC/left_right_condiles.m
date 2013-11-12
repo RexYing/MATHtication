@@ -1,20 +1,28 @@
-function [ verts_type ] = left_right_condiles( verts, faces, axes, verts_type )
+function [ verts_type ] = left_right_condiles( condile_verts, axes, verts_type )
 %
 % given the condile indices, separate them into 2 groups, each of which
 % represents a condile.
+%
+% The right condile is on the right side of the symmetry plane if facing in
+% the direction of the posterior-anterior axis
+% For right condile, verts_type is 1; left condile, verts_type is 2
+%
+% directions for axes should already be fixed before the function is called
+%
 % For find_condiles
 
-% Here assume the centroid of verts is at the origin
-verts = verts - repmat(mean_pt(verts), length(verts), 1);
+% Here assume the centroid of the jaw is already at the origin
 
-vals = zeros(length(verts), 1);
-% project onto the lateral axis to differentiate two condiles
-for i = 1: length(verts)
-    vals(i) = verts(i, :) * axes(:, 1);
+% project onto the lateral axis to differentiate between two condiles
+for i = 1: length(condile_verts)
+    val = condile_verts(i, :) * axes(:, 2);
+    if val > 0
+        % right condile
+        verts_type(i) = 1;
+    else
+        verts_type(i) = 2;
+    end
 end
-[vals, inds] = sort(vals);
-% vals(ind + 1) - vals(ind) is the maximum
-[~, ind] = max(vals(2: end) - vals(1: end - 1));
 
 
 end

@@ -142,7 +142,7 @@ def paint_inds(inds):
         obj.data.polygons[i].select = False
     
     for i in range(len(inds)):
-        if (inds[i] == 1):
+        if (inds[i] == 2):
             obj.data.polygons[i].select = True
     bpy.context.object.active_material_index = 1
     bpy.ops.object.material_slot_assign()
