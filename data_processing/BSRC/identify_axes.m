@@ -24,11 +24,10 @@ verts = verts - repmat(mean_pt(verts), length(verts), 1);
 % if there are 2 clusters, then the axis is post-anterior
 
     function centroids = cluster_test(axis)
-        vals = zeros(length(verts), 1);
-        for i = 1: length(verts)
-            vals(i) = dot(verts(i, :), axis);
-        end
-        maxVal = max(abs(vals)); % max value of dot product with one axes
+        % axis should be column vector
+        vals = verts * axis; % projection
+        
+        maxVal = max(abs(vals)); % max value of projection onto one axes
 
         % Find points with smaller distance to axis (1/20 of max dot product value)
         threshold = maxVal / 20;

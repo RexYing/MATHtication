@@ -7,14 +7,11 @@ function [ verts_type, faces_type ] = find_condiles( verts, faces, axes )
 % The axes are raw axis (before actually finding the accurate symmetry plane)
 %   
 
-vals = zeros(length(verts), 1);
 % make the centroid of verts to be the origin in the new coords system
 verts = verts - repmat(mean_pt(verts), length(verts), 1);
 
 % project onto the post-anterior axis
-for i = 1: length(verts)
-    vals(i) = verts(i, :) * axes(:, 1);
-end
+vals = verts * axes(:, 1);
 [vals, inds] = sort(vals);
 % vals(ind + 1) - vals(ind) is the maximum
 [~, ind] = max(vals(2: end) - vals(1: end - 1));
