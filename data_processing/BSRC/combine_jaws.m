@@ -24,10 +24,10 @@ axes_lower_cropped = find_orientation(verts_lower, axes_lower_cropped, vTypeLowe
 axes_upper_cropped = find_orientation(verts_upper, axes_upper_cropped, vTypeUpper);
 
 %% transform jaws to align
-mean_jaw_upper = mean_pt(verts_upper(vTypeUpper == 0, :));
-mean_jaw_lower = mean_pt(verts_lower(vTypeUpper == 0, :));
+meanJawpper = mean_pt(verts_upper(vTypeUpper == 0, :));
+meanJawLower = mean_pt(verts_lower(vTypeUpper == 0, :));
 verts_upper = verts_upper - repmat(mean_jaw_upper, length(verts_upper), 1);
-verts_lower = verts_lower - repmat(mean_jaw_lower, length(verts_lower), 1);
+verts_lower = verts_lower - repmat(meanJawLower, length(verts_lower), 1);
 % change of basis
 verts_upper = verts_upper * axes_upper_cropped;
 verts_lower = verts_lower * axes_upper_cropped;
@@ -37,3 +37,6 @@ write_ply(verts_lower, faces_lower, 'data/lower_processed.ply');
 
 
 % fit
+find_BSRC( verts_lower, faces_lower, vTypeLower, ...
+    verts_upper, faces_upper, vTypeUpper );
+

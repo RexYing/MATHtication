@@ -13,3 +13,6 @@ mesh = Mesh(verts_upper, faces_upper);
 %     v = v + verts_upper(faces_upper(i, 1), :) + verts_upper(faces_upper(i, 2), :) + verts_upper(faces_upper(i, 3), :);
 % end
 % v = v / (6 * length(faces_upper));
+
+%% Initial condition
+% run_java
