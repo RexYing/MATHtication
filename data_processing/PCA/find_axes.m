@@ -1,5 +1,5 @@
 %% read_mesh - read data from OFF, PLY, SMF or WRL file.
-function [ axes ] = find_axes( vertices )
+function [ axes ] = find_axes( verts, weights )
 %%
 %
 % * SYNTAX
@@ -18,6 +18,7 @@ function [ axes ] = find_axes( vertices )
 %
 % Principle component analysis
 % Find axes of best fit ellipsoid using SVD
+% Assume already set the center to origin
 %
 % * DEPENDENCIES
 %
@@ -33,8 +34,12 @@ function [ axes ] = find_axes( vertices )
 %sampleSize = 5000;
 %indSample = perform_farthest_point_sampling_mesh(vertices, faces, [], sampleSize);
 
+if nargin == 2
+    C = weighted_cov(verts, weights);
+else
+    C = cov(verts);
+end
 
-C = cov(vertices);
 [axes, D] = eig(C);
 latent = diag(D);
 % reverse order: from most significant component to the least significant

@@ -1,7 +1,7 @@
-function [ verts_type, faces_type ] = find_condiles( verts, faces, axes )
+function [ vertsType, facesType ] = find_condiles( verts, faces, axes )
 % 
 % given verts and axes in order (post-ant, lateral, vertical)
-% indices of condiles (left: 1, right: 2)
+% indices of condiles (left: 1, right: 2, teeth: 0)
 % verts: [N-by-3] matrix whos rows represent points
 %
 % The axes are raw axis (before actually finding the accurate symmetry plane)
@@ -16,7 +16,7 @@ vals = verts * axes(:, 1);
 % vals(ind + 1) - vals(ind) is the maximum
 [~, ind] = max(vals(2: end) - vals(1: end - 1));
 
-verts_type = zeros(length(verts), 1);
+vertsType = zeros(length(verts), 1);
 % Now use size to determine which side is the condile
 % Should not be a problem because condiles should always be smaller in size
 % than tooth rows
@@ -26,14 +26,14 @@ else
     inds = inds(1: ind);
 end
 % distinguish left and right condiles
-verts_type(inds) = left_right_condiles(verts(inds, :), axes, verts_type(inds));
+vertsType(inds) = left_right_condiles(verts(inds, :), axes, vertsType(inds));
 
-faces_type = zeros(length(faces), 1);
+facesType = zeros(length(faces), 1);
 for i = 1: length(faces)
-    if (verts_type(faces(i, 1)) == 1)
-        faces_type(i) = 1;
-    elseif (verts_type(faces(i, 1)) == 2)
-        faces_type(i) = 2;
+    if (vertsType(faces(i, 1)) == 1)
+        facesType(i) = 1;
+    elseif (vertsType(faces(i, 1)) == 2)
+        facesType(i) = 2;
     end
 end
 

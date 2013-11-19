@@ -1,4 +1,4 @@
-function [ vertices, faces ] = clean_mesh( vertices, faces )
+function [ vertices, faces, weights ] = clean_mesh( vertices, faces )
 %%
 %
 % * SYNTAX
