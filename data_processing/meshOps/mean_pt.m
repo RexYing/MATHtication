@@ -9,8 +9,6 @@ if nargin < 3 || strcmp(option, 'unweighted')
     end
 elseif strcmp(option, 'weighted')
     weights = mesh_weights(verts, faces);
-    % convert to column vector
-    weights = weights(:) / 3;
     meanPoint = (weights' * verts) / sum(weights);
 end
 

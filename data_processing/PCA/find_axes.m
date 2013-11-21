@@ -35,7 +35,7 @@ function [ axes ] = find_axes( verts, weights )
 %indSample = perform_farthest_point_sampling_mesh(vertices, faces, [], sampleSize);
 
 if nargin == 2
-    C = weighted_cov(verts, weights);
+    C = weighted_cov(verts, weights');
 else
     C = cov(verts);
 end

@@ -15,7 +15,7 @@
 axesLowerRaw = identify_axes(verts_lower, find_axes(verts_lower));
 
 [vertsTypeLower, facesTypeLower] = find_condiles(verts_lower, faces_lower, axesLowerRaw);
-[planeLower, temp] = find_sym(verts_lower, faces_lower, vertsTypeLower);
+[axesLower, temp, w] = find_sym(verts_lower, faces_lower, vertsTypeLower, facesTypeLower);
 
 
 %% Fast Marching sampling

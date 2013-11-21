@@ -1,7 +1,7 @@
 %% submesh - find submeshes of a mesh. 
 %
 % Vertices of each submesh forms a connected component.
-function [visited] = submesh(faces)
+function [verts, f] = submesh(verts, faces, weights)
 
 %%
 %
@@ -21,14 +21,6 @@ function [visited] = submesh(faces)
 %
 % identify different connected components of mesh
 %
-% * ACKNOWLEDGEMENT
-%
-% Gabriel Peyre
-%
-% * DEPENDENCIES
-%
-% mesh2sparse.m
-%
 % * REFERENCES
 %
 % * AUTHOR
@@ -36,6 +28,18 @@ function [visited] = submesh(faces)
 % Rex Ying
 %
 
-AdjMat = mesh2sparse(faces);
-[S, C] = graphconncomp(AdjMat);
+f = zeros(length(faces), 3);
+count = 0;
+for i = 1: length(faces)
+    if weights(faces(i, 1)) == 0 || weights(faces(i, 2)) == 0 || ...
+            weights(faces(i, 3)) == 0
+        
+    else
+        count = count + 1;
+        f(count, :) = faces(i, :);
+    end
+end
+f = f(1: count, :);
+end
+
 
