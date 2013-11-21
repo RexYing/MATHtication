@@ -1,11 +1,11 @@
 %% preparation
-path(pathdef);
-path('./toolbox/', path);
+%path(pathdef);
+%path('./toolbox/', path);
 clear all;
 close all;
 
 %% set parameters in this section
-mesh_name = 'upper_cropped-downsampled_teeth';
+mesh_name = 'lower_cleaned';
 %%% for 'upper_cropped-downsampled_teeth', use test_direct_ind = 1 and
 %%% upper_direct = '+';
 %%% for 'lower_cropped-downsampled_teeth', use test_direct_ind = 2 and
@@ -24,7 +24,7 @@ threshold_ratio_lb = 0.3;
 adj_cube = sparse([1,3,1,2,5,7,5,6,1,2,3,4], [2,4,3,4,6,8,7,8,5,6,7,8], ones(1,12));
 
 %% extract initial information (parts of input parameters)
-[M.V, M.F] = read_off(['./data/' mesh_name '.off']);
+[M.V, M.F] = read_ply('lower_cleaned.ply');
 M.V = M.V - repmat(mean(M.V, 2),1,size(M.V, 2));
 M.F2V = computeF2V(M);
 Mo = M;

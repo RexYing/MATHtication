@@ -1,4 +1,4 @@
-function [ axes, dists, weights ] = find_sym( verts, faces, vertsType, facesType )
+function [ axes, dists, weights ] = find_sym( verts, faces, vertsType, facesType, jawType )
 %FIND_SYM_DIST Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -12,7 +12,7 @@ meanpt = ((weights ~= 0)' * verts) / sum((weights ~= 0));
 
 verts = verts - repmat(meanpt, length(verts), 1);
 axes = identify_axes(verts, find_axes(verts(weights ~= 0, :)));
-axes
+axes = find_orientation(verts, axes, vertsType);
 N = axes(:, 2) / norm(axes(:, 2));
 reflMat = eye(3) - 2*(N)*(N');
 
@@ -24,11 +24,15 @@ reflMat = eye(3) - 2*(N)*(N');
         smallestNIdx = AIdx(1:n);
     end
 
+thresh_ratio = 0.1;
 num = sum(weights ~= 0);
-for i = 1: 2
-    vals = abs(verts * axes(:, 3));
-
-    thresh_ratio = 0.002;
+for i = 1: 10
+    vAxis = axes(:, 3);
+    if strcmp(jawType, 'lower')
+        vAxis = -vAxis;
+    end
+    vals = verts * vAxis;
+    %hist(vals, 100);
 
     wInds = find(weights ~= 0);
     thresh = floor(thresh_ratio * num);
@@ -40,6 +44,7 @@ for i = 1: 2
 
     verts = orig_verts - repmat(meanpt, length(verts), 1);
     axes = identify_axes(verts, find_axes(verts(weights ~= 0, :)));
+    axes = find_orientation(verts, axes, vertsType);
     axes
 end
 end

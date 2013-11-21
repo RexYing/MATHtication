@@ -1,4 +1,4 @@
-function [ axes ] = find_orientation( verts, axes, verts_type )
+function [ axes ] = find_orientation( verts, axes, vertsType )
 %
 % Axes in the order of post-anterior; lateral; vertical
 % the result will be 3 vectors each of which is the same or the opposite of
@@ -38,8 +38,8 @@ end
 % Determine direction of vertical axis according to the jaw's relative 
 % position to the condiles
 
-meanJaw = mean_pt(verts(verts_type == 0, :));
-meanCondile = mean_pt(verts(verts_type ~= 0, :));
+meanJaw = mean_pt(verts(vertsType == 0, :));
+meanCondile = mean_pt(verts(vertsType ~= 0, :));
 proj = dot(meanCondile - meanJaw, axes(:, 3));
 if (proj < 0)
     axes(:, 3) = -axes(:, 3);

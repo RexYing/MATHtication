@@ -40,7 +40,6 @@ for i = 1: length(faces)
 end
 % statistics toolbox
 kdtree = KDTreeSearcher(centroids, 'distance', 'euclidean');
-%reflPoints = zeros(length(verts), 3);
 reflPoints = zeros(length(verts), 3);
 dists = zeros(length(verts), 1);
 for i = 1: length(reflPoints)
@@ -69,7 +68,6 @@ for iter = 1: 1
     % shortest distance from mesh to reflected points
     dists = arrayfun(calcDist, 1: length(inds));
     scaleFactor = scaleFactorRatio * median(dists) * 3;
-    scaleFactor
     hist(dists(dists > 0), 100)
     for i = 1: length(faces)
         if dists(faces(i, 1)) > scaleFactor || dists(faces(i, 2)) > scaleFactor || ...
@@ -81,6 +79,7 @@ for iter = 1: 1
     end
     fprintf('#iter: 2\n');
     axes = identify_axes(verts, find_axes(verts(weights ~= 0, :)));
+    
 end
 
 
