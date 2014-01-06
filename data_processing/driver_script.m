@@ -21,6 +21,15 @@ data_folder = '../data/';
 hold on;
 [verts_upper, faces_upper] = load_mesh('upper_cropped-downsampled.ply');
 
+% [verts_lower, faces_lower] = load_mesh('StClair_Loki_Saimiri_lower_combined_final.ply');
+% hold on;
+% [verts_upper, faces_upper] = load_mesh('StClair_Loki_Saimiri_upper_combined_final.ply');
+% 
+% [verts_lower, faces_lower] = load_mesh('Papiomale_lower_final.ply.ply');
+% hold on;
+% [verts_upper, faces_upper] = load_mesh('Papiomale_lower_final.ply.ply');
+
+
 % after removing far-away vertices
 %load_mesh('lower_cropped-downsampled.ply');
 %load_mesh('upper_cropped-downsampled.ply');

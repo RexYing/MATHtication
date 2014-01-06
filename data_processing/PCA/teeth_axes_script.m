@@ -4,19 +4,30 @@
 % PCA
 %
 
-%disp('cleaning meshes ... ');
-%[verts_lower, faces_lower] = clean_mesh(verts_lower, faces_lower);
+disp('cleaning meshes ... ');
+[verts_lower, faces_lower] = clean_mesh(verts_lower, faces_lower);
+[verts_upper, faces_upper] = clean_mesh(verts_upper, faces_upper);
 
-%% PCA directly on upper/lower jaw
-% Upper jaw is well cropped; the lower one is not
-%
+%% PCA on upper/lower jaw
+% adaptively crop
 
-%axesUpperRaw = find_axes(verts_upper);
+disp('process lower');
 axesLowerRaw = identify_axes(verts_lower, find_axes(verts_lower));
 
 [vertsTypeLower, facesTypeLower] = find_condiles(verts_lower, faces_lower, axesLowerRaw);
-[axesLower, temp, w] = find_sym(verts_lower, faces_lower, vertsTypeLower, facesTypeLower, 'lower');
+[axesLowerCropped, temp, w] = find_sym(verts_lower, faces_lower, vertsTypeLower, facesTypeLower, 'lower');
+meanpt = ((w ~= 0)' * verts_lower) / sum((w ~= 0));
+vExportLower = verts_lower - repmat(meanpt, length(verts_lower), 1);
+vExportLower = vExportLower * axesLowerCropped;
 
+disp('process upper');
+axesUpperRaw = identify_axes(verts_upper, find_axes(verts_upper));
+
+[vertsTypeUpper, facesTypeUpper] = find_condiles(verts_upper, faces_upper, axesUpperRaw);
+[axesUpperCropped, temp, w] = find_sym(verts_upper, faces_upper, vertsTypeUpper, facesTypeUpper, 'upper');
+meanpt = ((w ~= 0)' * verts_upper) / sum((w ~= 0));
+vExportUpper = verts_upper - repmat(meanpt, length(verts_upper), 1);
+vExportUpper = vExportUpper * axesUpperCropped;
 
 %% Fast Marching sampling
 % sampleSize = 1000;
@@ -30,4 +41,4 @@ axesLowerRaw = identify_axes(verts_lower, find_axes(verts_lower));
 
 
 %% Record
-%export_data
+export_data

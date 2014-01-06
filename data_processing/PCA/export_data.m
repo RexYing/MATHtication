@@ -16,71 +16,71 @@ docRootNode.appendChild(axesElem);
 %% axes raw
 axesSubElem = docNode.createElement('axes_raw');
 axesElem.appendChild(axesSubElem);
-axesLower = docNode.createElement('lower');
-axesUpper = docNode.createElement('upper');
-axesSubElem.appendChild(axesLower);
-axesSubElem.appendChild(axesUpper);
+axesLowerElem = docNode.createElement('lower');
+axesUpperElem = docNode.createElement('upper');
+axesSubElem.appendChild(axesLowerElem);
+axesSubElem.appendChild(axesUpperElem);
 for i = 1: 3
     % Lower Raw
     axis = docNode.createElement('axis');
     axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
-        axes_lower_raw(:, i)) ));
-    axesLower.appendChild(axis);
+        axesLowerRaw(:, i)) ));
+    axesLowerElem.appendChild(axis);
     
     % Upper Raw
     axis = docNode.createElement('axis');
     axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
-        axes_upper_raw(:, i)) ));
-    axesUpper.appendChild(axis);
+        axesUpperRaw(:, i)) ));
+    axesUpperElem.appendChild(axis);
 end
 clearvars axesRawElem;
 
 %% axes sample 
-sampleSize = 2000;
+if exist('axesLowerSample', 'var')
+    sampleSize = 2000;
 
-axesSubElem = docNode.createElement('axes_FM');
-axesSubElem.setAttribute('sample_size', int2str(sampleSize));
-axesElem.appendChild(axesSubElem);
-axesLower = docNode.createElement('lower');
-axesUpper = docNode.createElement('upper');
-axesSubElem.appendChild(axesLower);
-axesSubElem.appendChild(axesUpper);
-for i = 1: 3
-    % Lower Raw
-    axis = docNode.createElement('axis');
-    axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
-        axes_lower_sample(:, i)) ));
-    axesLower.appendChild(axis);
-    
-    % Upper Raw
-    axis = docNode.createElement('axis');
-    axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
-        axes_upper_sample(:, i)) ));
-    axesUpper.appendChild(axis);
+    axesSubElem = docNode.createElement('axes_FM');
+    axesSubElem.setAttribute('sample_size', int2str(sampleSize));
+    axesElem.appendChild(axesSubElem);
+    axesLowerElem = docNode.createElement('lower');
+    axesUpperElem = docNode.createElement('upper');
+    axesSubElem.appendChild(axesLowerElem);
+    axesSubElem.appendChild(axesUpperElem);
+    for i = 1: 3
+        % Lower Raw
+        axis = docNode.createElement('axis');
+        axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
+            axesLowerSample(:, i)) ));
+        axesLowerElem.appendChild(axis);
+
+        % Upper Raw
+        axis = docNode.createElement('axis');
+        axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
+            axesUpperSample(:, i)) ));
+        axesUpperElem.appendChild(axis);
+    end
 end
 
 %% axes adaptive cropping
 axesSubElem = docNode.createElement('axes_adaptive_crop');
 % TODO: attribute ...
 axesElem.appendChild(axesSubElem);
-axesLower = docNode.createElement('lower');
-axesUpper = docNode.createElement('upper');
-axesSubElem.appendChild(axesLower);
-axesSubElem.appendChild(axesUpper);
+axesLowerElem = docNode.createElement('lower');
+axesUpperElem = docNode.createElement('upper');
+axesSubElem.appendChild(axesLowerElem);
+axesSubElem.appendChild(axesUpperElem);
 for i = 1: 3
     % Lower Raw
     axis = docNode.createElement('axis');
     axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
-        axes_lower_cropped(:, i)) ));
-    %adacrop_lower.Aux.axis(:, i)) ));
-    axesLower.appendChild(axis);
+        axesLowerCropped(:, i)) ));
+    axesLowerElem.appendChild(axis);
     
     % Upper Raw
     axis = docNode.createElement('axis');
     axis.appendChild(docNode.createTextNode(sprintf('%f,%f,%f', ...
-        axes_upper_cropped(:, i)) ));
-    %adacrop_upper.Aux.axis(:, i)) ));
-    axesUpper.appendChild(axis);
+        axesUpperCropped(:, i)) ));
+    axesUpperElem.appendChild(axis);
 end
 
 %% Output

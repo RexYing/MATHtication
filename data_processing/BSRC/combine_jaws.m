@@ -6,37 +6,37 @@ load raw_mesh
 load axes
 
 % identify axes
-axes_lower_cropped = identify_axes(verts_lower, axes_lower_cropped);
-axes_upper_cropped = identify_axes(verts_upper, axes_upper_cropped);
+axesLowerCropped = identify_axes(verts_lower, axesLowerCropped);
+axesUpperCropped = identify_axes(verts_upper, axesUpperCropped);
 
 % find condiles
-[vTypeLower, fTypeLower] = find_condiles(verts_lower, faces_lower, axes_lower_cropped);
+[vertsTypeLower, facesTypeLower] = find_condiles(verts_lower, faces_lower, axesLowerCropped);
 disp('write to data/f_lower_inds.csv ...');
-csvwrite('data/f_lower_inds.csv', fTypeLower);
-[vTypeUpper, fTypeUpper] = find_condiles(verts_upper, faces_upper, axes_upper_cropped);
+csvwrite('data/f_lower_inds.csv', facesTypeLower);
+[vertsTypeUpper, facesTypeUpper] = find_condiles(verts_upper, faces_upper, axesUpperCropped);
 disp('write to data/f_upper_inds.csv ...');
-csvwrite('data/f_upper_inds.csv', fTypeUpper);
+csvwrite('data/f_upper_inds.csv', facesTypeUpper);
 
 % find symmetry plane
 
 % find orientation of axes
-axes_lower_cropped = find_orientation(verts_lower, axes_lower_cropped, vTypeLower);
-axes_upper_cropped = find_orientation(verts_upper, axes_upper_cropped, vTypeUpper);
+axesLowerCropped = find_orientation(verts_lower, axesLowerCropped, vertsTypeLower);
+axesUpperCropped = find_orientation(verts_upper, axesUpperCropped, vertsTypeUpper);
 
 %% transform jaws to align
-meanJawpper = mean_pt(verts_upper(vTypeUpper == 0, :));
-meanJawLower = mean_pt(verts_lower(vTypeUpper == 0, :));
-verts_upper = verts_upper - repmat(mean_jaw_upper, length(verts_upper), 1);
+meanJawUpper = mean_pt(verts_upper(vertsTypeUpper == 0, :));
+meanJawLower = mean_pt(verts_lower(vertsTypeUpper == 0, :));
+verts_upper = verts_upper - repmat(meanJawUpper, length(verts_upper), 1);
 verts_lower = verts_lower - repmat(meanJawLower, length(verts_lower), 1);
 % change of basis
-verts_upper = verts_upper * axes_upper_cropped;
-verts_lower = verts_lower * axes_upper_cropped;
+verts_upper = verts_upper * axesUpperCropped;
+verts_lower = verts_lower * axesUpperCropped;
 disp('record processed data ...');
 write_ply(verts_upper, faces_upper, 'data/upper_processed.ply');
 write_ply(verts_lower, faces_lower, 'data/lower_processed.ply');
 
 
 % fit
-find_BSRC( verts_lower, faces_lower, vTypeLower, ...
-    verts_upper, faces_upper, vTypeUpper );
+find_BSRC( verts_lower, faces_lower, vertsTypeLower, ...
+    verts_upper, faces_upper, vertsTypeUpper );
 

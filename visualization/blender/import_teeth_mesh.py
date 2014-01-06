@@ -9,6 +9,7 @@ from io_mesh_ply import import_ply
 
 filepath = bpy.data.filepath
 root_dir = filepath[0: filepath.find('visualization') - 1]
+jaw_names = ('lower_cropped-downsampled', 'upper_cropped-downsampled')
 
 def find_center(mesh_name):
     '''
@@ -51,12 +52,13 @@ def load_jaw_from_ply(filename):
 
 ## TODO: jaw class
 def load_original():
-    jaw_names = ('lower_cleaned', 'upper_cropped-downsampled')
     # Move object center of the mesh to the center of its geometry
     layer = 0
     for name in jaw_names:
+        print(name)
         select_layer(layer)
         load_jaw_from_ply(name + '.ply')
+        # move to center
         bpy.ops.object.origin_set(
             type='GEOMETRY_ORIGIN', center='MEDIAN')
         layer += 1
@@ -92,7 +94,7 @@ def draw_line(name, pt1, pt2):
     
 def draw_axes(name, coords):
     for i in range(0, 3):
-        pt1 = [10 * coords[i * 3 + j] for j in range(0, 3)];
+        pt1 = [20 * coords[i * 3 + j] for j in range(0, 3)];
         pt1 = tuple(pt1)
         pt2 = (-num for num in pt1)
         # naming: method + 'axis' + dimNum
@@ -102,22 +104,22 @@ def draw_axes(name, coords):
 Display axes in different layers
 '''
 def pca(axes_dict):
+#    select_layer(2)
+#    draw_axes('sample_lower_', axes_dict['sample']['lower'])
+#    select_layer(3)
+#    draw_axes('sample_upper_', axes_dict['sample']['upper'])
     select_layer(2)
-    draw_axes('sample_lower_', axes_dict['sample']['lower'])
-    select_layer(3)
-    draw_axes('sample_upper_', axes_dict['sample']['upper'])
-    select_layer(4)
     draw_axes('raw_lower_', axes_dict['raw']['lower'])
-    select_layer(5)
+    select_layer(3)
     draw_axes('raw_upper_', axes_dict['raw']['upper'])
     
-    select_layer(6)
+    select_layer(4)
     draw_axes('adacrop_lower_', axes_dict['adacrop']['lower'])
-    select_layer(7)
+    select_layer(5)
     draw_axes('adacrop_upper_', axes_dict['adacrop']['upper'])
     
 def main():
-    #jaws = load_original()
+    jaws = load_original()
     
     path = os.path.join(root_dir, 'visualization', 'blender')
     sys.path.append(path)
@@ -125,10 +127,23 @@ def main():
     # import xml file on the jaw being analyzed
     loader = read_jaw_data.DataLoader('jaw1.xml')
     # display principle component axes
-    #pca(loader.load_axes());
+    pca(loader.load_axes());
     inds = loader.load_inds('f_upper_inds.csv')
     paint_inds(inds)
 
+'''
+mat_ind is both the material index and the value in inds array
+'''
+def assign_faces_color(polygons, inds, mat_ind):
+    #deselect everything first
+    for i in range(len(polygons)):
+        polygons[i].select = False
+        
+    for i in range(len(inds)):
+        if inds[i] == mat_ind:
+            polygons[i].select = True
+    bpy.context.object.active_material_index = mat_ind
+    bpy.ops.object.material_slot_assign()
           
 def paint_inds(inds):
     for obj in bpy.data.objects:
@@ -137,15 +152,8 @@ def paint_inds(inds):
     obj.select = True
     bpy.ops.object.editmode_toggle()
     
-    #deselect everything first
-    for i in range(len(obj.data.polygons)):
-        obj.data.polygons[i].select = False
-    
-    for i in range(len(inds)):
-        if (inds[i] == 2):
-            obj.data.polygons[i].select = True
-    bpy.context.object.active_material_index = 1
-    bpy.ops.object.material_slot_assign()
+    assign_faces_color(obj.data.polygons, inds, 1)
+    assign_faces_color(obj.data.polygons, inds, 2)
         
     bpy.ops.object.editmode_toggle()
     

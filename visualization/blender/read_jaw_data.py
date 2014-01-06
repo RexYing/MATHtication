@@ -17,12 +17,17 @@ class DataLoader:
         
     def get_axes_by_name(self, name):
         ret = {}
+        if self.root.find('axes').find(name) == None:
+            return;
+        
+        # Lower jaw axes
         coords = []
         for axis in self.root.find('axes').find(name).find('lower'):
             coords += axis.text.split(',')
         coords = [float(num) for num in coords]
         ret['lower'] = coords;
         
+        # Upper jaw axes
         coords = []
         for axis in self.root.find('axes').find(name).find('upper'):
             coords += axis.text.split(',')

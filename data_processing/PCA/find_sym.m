@@ -25,8 +25,9 @@ reflMat = eye(3) - 2*(N)*(N');
     end
 
 thresh_ratio = 0.1;
+vertsDiffToleranceRatio = 0.01;
 num = sum(weights ~= 0);
-for i = 1: 10
+for i = 1: 20
     vAxis = axes(:, 3);
     if strcmp(jawType, 'lower')
         vAxis = -vAxis;
@@ -45,7 +46,14 @@ for i = 1: 10
     verts = orig_verts - repmat(meanpt, length(verts), 1);
     axes = identify_axes(verts, find_axes(verts(weights ~= 0, :)));
     axes = find_orientation(verts, axes, vertsType);
-    axes
+    
+    disp(i);
+    vals = verts * axes(:, 2);
+    if abs(sum(vals > 0) - sum(vals < 0)) < length(orig_verts) * vertsDiffToleranceRatio
+        break;
+    else
+        disp(abs(sum(vals > 0) - sum(vals < 0)) / length(orig_verts));
+    end
 end
 end
 
