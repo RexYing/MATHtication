@@ -5,6 +5,9 @@
 % cropped
 %
 
+EXPORT_LOWER_POS = 'data/lower_processed.ply';
+EXPORT_UPPER_POS = 'data/upper_processed.ply';
+
 docNode = com.mathworks.xml.XMLUtils.createDocument('mathtication');
 docRootNode = docNode.getDocumentElement;
 docRootNode.setAttribute('upper_jaw_name', 'upper_cropped-downsampled.ply');
@@ -87,3 +90,8 @@ end
 xmlFileName = ['data/jaw1', '.xml'];
 xmlwrite(xmlFileName, docNode);
 type(xmlFileName);
+
+disp('exporting lower jaw...')
+write_ply(vExportLower, faces_lower, EXPORT_LOWER_POS);
+disp('exporting upper jaw...')
+write_ply(vExportUpper, faces_upper, EXPORT_UPPER_POS);
