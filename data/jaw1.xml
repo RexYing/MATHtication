@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mathtication lower_jaw_name="lower_cropped-downsampled.ply" upper_jaw_name="upper_cropped-downsampled.ply">
+<mathtication lower_jaw_name="LokiSaimiriLower.ply" upper_jaw_name="LokiSaimiriUpper.ply">
    <axes>
       <axes_raw>
          <lower>
-            <axis>0.219579,0.330540,0.917893</axis>
-            <axis>0.972866,-0.144510,-0.180690</axis>
-            <axis>0.072920,0.932663,-0.353303</axis>
+            <axis>-0.623157,0.306086,-0.719713</axis>
+            <axis>0.552662,0.823470,-0.128305</axis>
+            <axis>0.553389,-0.477712,-0.682313</axis>
          </lower>
          <upper>
-            <axis>0.122961,0.351667,0.928014</axis>
-            <axis>0.990253,-0.105125,-0.091371</axis>
-            <axis>0.065425,0.930204,-0.361165</axis>
+            <axis>0.579969,-0.311338,0.752798</axis>
+            <axis>0.570915,0.814525,-0.102976</axis>
+            <axis>0.581112,-0.489507,-0.650147</axis>
          </upper>
       </axes_raw>
       <axes_adaptive_crop>
          <lower>
-            <axis>0.100956,0.641390,0.760543</axis>
-            <axis>0.994861,-0.071023,-0.072164</axis>
-            <axis>-0.007731,-0.763920,0.645264</axis>
+            <axis>-0.456543,0.701358,-0.547418</axis>
+            <axis>0.785775,0.606433,0.121638</axis>
+            <axis>-0.417284,0.374615,0.827972</axis>
          </lower>
          <upper>
-            <axis>-0.203807,-0.633347,-0.746548</axis>
-            <axis>-0.978949,0.140398,0.148143</axis>
-            <axis>-0.010988,-0.761025,0.648629</axis>
+            <axis>-0.697963,0.398757,-0.594844</axis>
+            <axis>0.557852,0.823591,-0.102460</axis>
+            <axis>-0.449052,0.403348,0.797284</axis>
          </upper>
       </axes_adaptive_crop>
    </axes>

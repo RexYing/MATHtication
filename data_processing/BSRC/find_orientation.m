@@ -22,16 +22,20 @@ verts = verts - repmat(mean_pt(verts), length(verts), 1);
 vals = verts * axes(:, 1);
 maxVal = max(vals); % max value of projection onto one axes
 minVal = min(vals);
-upperThresh = maxVal * 0.95;
-lowerThresh = minVal * 0.95;
+% this might not be robust enough under extreme circumstances where raw axis is
+% very tilted
+upperThresh = maxVal * 0.90;
+lowerThresh = minVal * 0.90;
 group1Verts = verts(vals > upperThresh, :);
 group2Verts = verts(vals < lowerThresh, :);
 [~, centroids1] = kmeans(group1Verts, 2);
 dist1 = norm(centroids1(1, :) - centroids1(2, :));
 [~, centroids2] = kmeans(group2Verts, 2);
 dist2 = norm(centroids2(1, :) - centroids2(2, :));
+
 if dist1 > dist2
     % change direction of post-ant
+    disp('Change the orientation of the posterior-anterior axis');
     axes(:, 1) = -axes(:, 1);
 end
 
@@ -42,6 +46,7 @@ meanJaw = mean_pt(verts(vertsType == 0, :));
 meanCondile = mean_pt(verts(vertsType ~= 0, :));
 proj = dot(meanCondile - meanJaw, axes(:, 3));
 if (proj < 0)
+    disp('Change the orientation of vertical axis');
     axes(:, 3) = -axes(:, 3);
 end
 

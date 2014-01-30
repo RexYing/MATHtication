@@ -45,6 +45,5 @@ if (dist2 > dist1)
     % axes(:, 1) is the lateral axis
     axes(:, [1, 2, 3]) = axes(:, [2, 1, 3]);
 end
-
 end
 

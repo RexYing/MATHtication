@@ -15,7 +15,7 @@ disp('process lower');
 axesLowerRaw = identify_axes(verts_lower, find_axes(verts_lower));
 
 [vertsTypeLower, facesTypeLower] = find_condiles(verts_lower, faces_lower, axesLowerRaw);
-[axesLowerCropped, temp, w] = find_sym(verts_lower, faces_lower, vertsTypeLower, facesTypeLower, 'lower');
+[axesLowerCropped, temp1, w] = find_sym(verts_lower, faces_lower, vertsTypeLower, facesTypeLower, 'lower');
 meanpt = ((w ~= 0)' * verts_lower) / sum((w ~= 0));
 vExportLower = verts_lower - repmat(meanpt, length(verts_lower), 1);
 vExportLower = vExportLower * axesLowerCropped;

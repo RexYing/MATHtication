@@ -58,7 +58,6 @@ def load_original():
         print(name)
         select_layer(layer)
         load_jaw_from_ply(name + '.ply')
-        # move to center
         bpy.ops.object.origin_set(
             type='GEOMETRY_ORIGIN', center='MEDIAN')
         layer += 1
@@ -94,7 +93,7 @@ def draw_line(name, pt1, pt2):
     
 def draw_axes(name, coords):
     for i in range(0, 3):
-        pt1 = [20 * coords[i * 3 + j] for j in range(0, 3)];
+        pt1 = [10 * coords[i * 3 + j] for j in range(0, 3)];
         pt1 = tuple(pt1)
         pt2 = (-num for num in pt1)
         # naming: method + 'axis' + dimNum
@@ -128,7 +127,7 @@ def main():
     loader = read_jaw_data.DataLoader('jaw1.xml')
     # display principle component axes
     pca(loader.load_axes());
-    inds = loader.load_inds('f_upper_inds.csv')
+    inds = loader.load_inds('f_lower_inds.csv')
     paint_inds(inds)
 
 '''
@@ -139,18 +138,26 @@ def assign_faces_color(polygons, inds, mat_ind):
     for i in range(len(polygons)):
         polygons[i].select = False
         
+    count = 0
     for i in range(len(inds)):
         if inds[i] == mat_ind:
             polygons[i].select = True
+            count += 1
     bpy.context.object.active_material_index = mat_ind
     bpy.ops.object.material_slot_assign()
+    print(count)
           
+'''
+Need to toggle to edit mode and make selection type 'face'
+'''
 def paint_inds(inds):
     for obj in bpy.data.objects:
         obj.select = False
-    obj = bpy.data.objects['upper_cropped-downsampled']
+    obj = bpy.data.objects['lower_cropped-downsampled']
     obj.select = True
     bpy.ops.object.editmode_toggle()
+    for i in range(3):
+        bpy.ops.object.material_slot_add()
     
     assign_faces_color(obj.data.polygons, inds, 1)
     assign_faces_color(obj.data.polygons, inds, 2)
