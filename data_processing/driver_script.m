@@ -17,13 +17,13 @@ data_folder = '../data/';
 % verts_upper, faces_upper: vertices and faces list of upper jaw mesh
 
 % Original
-% [verts_lower, faces_lower] = load_mesh('lower_cropped-downsampled.ply');
-% hold on;
-% [verts_upper, faces_upper] = load_mesh('upper_cropped-downsampled.ply');
-
-[verts_lower, faces_lower] = load_mesh('LokiSaimiriLower1.ply');
+[verts_lower, faces_lower] = load_mesh('lower_cropped-downsampled.ply');
 hold on;
-[verts_upper, faces_upper] = load_mesh('LokiSaimiriUpper1.ply');
+[verts_upper, faces_upper] = load_mesh('upper_cropped-downsampled.ply');
+
+% [verts_lower, faces_lower] = load_mesh('LokiSaimiriLower1.ply');
+% hold on;
+% [verts_upper, faces_upper] = load_mesh('LokiSaimiriUpper1.ply');
 % 
 % [verts_lower, faces_lower] = load_mesh('PapiomaleLower.ply');
 % hold on;

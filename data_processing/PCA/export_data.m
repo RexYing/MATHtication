@@ -5,17 +5,15 @@
 % cropped
 %
 
-EXPORT_LOWER_POS = 'data/lower_processed2.ply';
-EXPORT_UPPER_POS = 'data/upper_processed2.ply';
+EXPORT_LOWER_POS = 'data/lower_processed.ply';
+EXPORT_UPPER_POS = 'data/upper_processed.ply';
+LOWER_JAW_NAME = 'LokiSaimiriLower.ply';
+UPPER_JAW_NAME = 'LokiSaimiriUpper.ply';
 
 docNode = com.mathworks.xml.XMLUtils.createDocument('mathtication');
 docRootNode = docNode.getDocumentElement;
-%docRootNode.setAttribute('upper_jaw_name', 'upper_cropped-downsampled.ply');
-%docRootNode.setAttribute('lower_jaw_name', 'lower_cropped-downsampled.ply');
-% docRootNode.setAttribute('upper_jaw_name', 'PapiomaleUpper.ply');
-% docRootNode.setAttribute('lower_jaw_name', 'PapiomaleLower.ply');
-docRootNode.setAttribute('upper_jaw_name', 'LokiSaimiriUpper.ply');
-docRootNode.setAttribute('lower_jaw_name', 'LokiSaimiriLower.ply');
+docRootNode.setAttribute('upper_jaw_name', UPPER_JAW_NAME);
+docRootNode.setAttribute('lower_jaw_name', LOWER_JAW_NAME);
 
 axesElem = docNode.createElement('axes');
 docRootNode.appendChild(axesElem);

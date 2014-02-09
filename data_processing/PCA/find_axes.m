@@ -38,6 +38,7 @@ function [ axes ] = find_axes( verts, weights )
 % verts = verts - repmat(meanpt, length(verts), 1);
 
 if nargin == 2
+    weights = weights / sum(weights);
     C = weighted_cov(verts, weights');
 else
     C = cov(verts);

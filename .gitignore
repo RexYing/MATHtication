@@ -38,6 +38,7 @@
 # data files
 *.csv
 *.mat
+*.ply
 
 # log files
 *.log

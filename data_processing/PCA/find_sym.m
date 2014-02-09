@@ -8,10 +8,12 @@ vertAreas = mesh_weights(verts, faces);
 vertAreas = vertAreas(:) / 3;
 weights = vertAreas;
 weights(vertsType ~= 0, :) = 0;
-meanpt = ((weights ~= 0)' * verts) / sum((weights ~= 0));
+%meanpt = ((weights ~= 0)' * verts) / sum((weights ~= 0));
+meanpt = (weights' * verts) / sum(weights);
 
 verts = verts - repmat(meanpt, length(verts), 1);
-axes = identify_axes(verts, find_axes(verts(weights ~= 0, :)));
+axes = identify_axes(verts, find_axes(verts, weights));
+%axes = identify_axes(verts, find_axes(verts, weights));
 axes = find_orientation(verts, axes, vertsType);
 N = axes(:, 2) / norm(axes(:, 2));
 reflMat = eye(3) - 2*(N)*(N');
@@ -31,7 +33,7 @@ num = sum(weights ~= 0);
 prev = Inf;
 % in case it didn't get assigned, ie. return on first iteration
 dists = 0;
-for i = 1: 20
+for i = 1: 1
     disp(i);
     vals = verts * axes(:, 2);
     if abs(sum(vals > 0) - sum(vals < 0)) < length(orig_verts) * vertsDiffToleranceRatio
@@ -61,10 +63,12 @@ for i = 1: 20
     prevWeights = weights;
     weights(wInds(inds)) = 0;
 
-    meanpt = ((weights ~= 0)' * orig_verts) / sum((weights ~= 0));
+    %meanpt = ((weights ~= 0)' * orig_verts) / sum((weights ~= 0));
+    meanpt = (weights' * orig_verts) / sum(weights);
 
     verts = orig_verts - repmat(meanpt, length(verts), 1);
     axes = identify_axes(verts, find_axes(verts(weights ~= 0, :)));
+    %axes = identify_axes(verts, find_axes(verts, weights));
     axes = find_orientation(verts, axes, vertsType);
 
     if i == 20

@@ -43,7 +43,7 @@ function C = weighted_cov(Y, w)
 %
 
 % Check input
-ctrl = isvector(w) & isreal(w) & ~any(isnan(w)) & ~any(isinf(w)) & all(w > 0);
+ctrl = isvector(w) & isreal(w) & ~any(isnan(w)) & ~any(isinf(w)) & all(w >= 0);
 if ctrl
   w = w(:) / sum(w);                                                              % w is column vector
 else
