@@ -1,5 +1,10 @@
+clearvars a
+t = [0 0 0; 0 1 0; 0 2 0; 0 1 1];
+f = [1 2 4; 2 3 4];
+a = MeshModel(t, f);
+%%
+clearvars a
 a = MeshModel(verts_lower, faces_lower);
-a.createModel(1);
 
 %% Triangle overlap test
 a = [0 2 3; 0 0 0; 0 2 0];

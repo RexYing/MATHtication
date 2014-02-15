@@ -37,18 +37,30 @@ function [ axes ] = find_axes( verts, weights )
 % meanpt = mean_pt(verts);
 % verts = verts - repmat(meanpt, length(verts), 1);
 
+if isempty(verts)
+    disp('ERROR: empty matrix passed into find_axes(verts) ');
+end
 if nargin == 2
     weights = weights / sum(weights);
     C = weighted_cov(verts, weights');
-else
+else    
     C = cov(verts);
 end
 
-[axes, D] = eig(C);
+try
+    [axes, D] = eig(C);
+catch err
+    verts
+    rethrow(err);
+end
 latent = diag(D);
 % reverse order: from most significant component to the least significant
-latent = latent(end: -1: 1);
-axes = axes(:, end: -1: 1);
+% latent = latent(end: -1: 1);
+% axes = axes(:, end: -1: 1);
+
+[latent, inds] = sort(latent, 'descend');
+axes = axes(:, inds);
+
 cumPercentVar = cumsum(latent) / sum(latent);
 fprintf('Two of the dimensions account for %3.1f%% of the variance.\n', ...
      cumPercentVar(2) * 100);

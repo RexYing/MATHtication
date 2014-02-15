@@ -1,7 +1,7 @@
 function [ weights ] = mesh_weights( verts, faces )
 % find the weights of each vertex in a mesh
 % The weight of a vertex is the sum of all areas of triangles which contain
-% the vertex.
+% the vertex divided by 3.
 
 weights = zeros(length(verts), 1);
 areas = zeros(length(faces), 1);

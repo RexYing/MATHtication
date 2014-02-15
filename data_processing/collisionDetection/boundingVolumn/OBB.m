@@ -13,10 +13,8 @@ classdef OBB < BoundingVolumn
         function size = getSize(bv)
             size = bv.halfDim .* bv.halfDim;
         end
-    end
-    
-    methods (Static)
         
+        % determine position and dimension of bounding box bv
         function fitToTris(bv, orient, verts)
             bv.rotMat = orient;
             verts = verts * bv.rotMat;
@@ -31,7 +29,9 @@ classdef OBB < BoundingVolumn
             bv.pos = bv.rotMat * meanPt;
             bv.halfDim = (maxCoords - minCoords) / 2;
         end
-        
+    end
+    
+    methods (Static)        
         
         % override
         % check overlap of bounding box

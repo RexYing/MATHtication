@@ -5,6 +5,8 @@ classdef BoundingVolumn < handle
     properties
         pos % position of BV
         rotMat  % Rotational matrix
+        % index of first child BV. For a leaf BV, firstChild stores the
+        % negative of the index of the only triangle/face the bv contains.
         firstChild = [];
     end
     
@@ -14,7 +16,10 @@ classdef BoundingVolumn < handle
     
     methods
         function leaf = isLeaf(bv)
-            if (isempty(bv.firstChild))
+%             if isempty(bv.firstChild)
+%                 disp('ERROR: first child for a BV not set');
+%             end
+            if (bv.firstChild < 0)
                 leaf = 1;
             else
                 leaf = 0;
@@ -24,10 +29,10 @@ classdef BoundingVolumn < handle
     
     methods (Abstract)
         size = getSize(bv)
+        fitToTris(bv, orient, tris, numTris)
     end
     
     methods (Abstract, Static)
-        fitToTris(bv, orient, tris, numTris)
         overlap = bvOverlap(bv, bv1, rotMat, trans)
     end
     
