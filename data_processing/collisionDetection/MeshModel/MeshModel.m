@@ -71,9 +71,9 @@ classdef MeshModel < handle
         % The vertex indices for first triangle are faces(faceInds(1), :)
         function isBuilt = buildRecurse(model, bvInd, faceInds)
             bv = model.bvs(bvInd);
-            if (mod(bvInd, 1000) == 0)
-                disp(bvInd)
-            end
+%             if (mod(bvInd, 1000) == 0)
+%                 disp(bvInd)
+%             end
             face = model.faces(faceInds, :);
             bvVerts = model.verts(face, :);
             % axes/rotation matrix in decreasing order
@@ -143,7 +143,7 @@ classdef MeshModel < handle
         end
         
         % Descends the hierarchy, converting world-relative transforms to 
-        % parent-relative transforms
+        % parent-relative transforms, in terms of rotation and translation.
         %
         % Before making this call, the tree hierarchy of bounding volumns 
         % should have already been built.
@@ -151,12 +151,18 @@ classdef MeshModel < handle
         % R: parent rotation matrix
         % T: parent translation column vector
         function makeParentRelative(model, bvInd, R, T)
+            bv = model.bvs(bvInd);
+            if bv.isLeaf == 0
+                % make children parent-relative
+                model.makeParentRelative(bv.firstChild, bv.rotMat, bv.pos);
+                model.makeParentRelative(bv.firstChild + 1, bv.rotMat, bv.pos);
+            end
             
+            % make itself parent relative
+            bv.rotMat = R' * bv.rotMat;
+            bv.pos = R' * (bv.pos - T);
         end
         
-        function [b] = createModel(a, b)
-          b = b + 1;
-        end
     end
     
     methods (Static = true)
