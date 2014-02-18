@@ -5,13 +5,13 @@ classdef OBB < BoundingVolumn
     properties
         
         % half dimension of OBB
-        % 3-by-1
+        % 3-by-1 column vector
         halfDim 
     end
     
     methods
         function size = getSize(bv)
-            size = bv.halfDim .* bv.halfDim;
+            size = dot(bv.halfDim, bv.halfDim);
         end
         
         % determine position and dimension of bounding box bv
@@ -37,7 +37,7 @@ classdef OBB < BoundingVolumn
         % check overlap of bounding box
         % return 1 if there is overlap; 0 otherwise
         function overlap = bvOverlap(bv1, bv2, rotMat, trans)
-            if obbDisjoint(rotMat, trans, bv1.halfDim, bv2.halfDim) == 0
+            if OBB.obbDisjoint(rotMat, trans, bv1.halfDim, bv2.halfDim) == 0
                 overlap = 1;
             else
                 overlap = 0;
