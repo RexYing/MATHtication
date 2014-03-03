@@ -120,8 +120,8 @@ classdef OBB < BoundingVolumn
             
             % p2 cross q2
             t = abs(trans(1) * rotMat(3, 2) - trans(3) * rotMat(1, 2));
-            if (t > dim1(1) * A(3, 2) - dim1(3) * A(1, 2) ...
-                   + dim2(1) * A(2, 3) - dim2(3) * A(2, 1) )
+            if (t > dim1(1) * A(3, 2) + dim1(3) * A(1, 2) ...
+                   + dim2(1) * A(2, 3) + dim2(3) * A(2, 1) )
                status = 11;
                return;
             end

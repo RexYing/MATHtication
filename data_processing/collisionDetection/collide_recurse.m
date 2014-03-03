@@ -6,12 +6,13 @@ res.nBvTests = res.nBvTests + 1;
 
 bv1 = meshModel1.bvs(bvInd1);
 bv2 = meshModel2.bvs(bvInd2);
-if OBB.bvOverlap(bv1, bv2, bvR, bvT) == 0
+%if OBB.bvOverlap(bv1, bv2, bvR, bvT) == 0
+if obb_overlap(bv1, bv2, bvR, bvT) == 0
     return;
 end
 
-isLeaf1 = bv1.isLeaf();
-isLeaf2 = bv2.isLeaf();
+isLeaf1 = (bv1.firstChild < 0);
+isLeaf2 = (bv2.firstChild < 0);
 % both are leaf: test triangle overlap
 if isLeaf1 && isLeaf2 == 1
     res.nTriTests = res.nTriTests + 1;
@@ -30,19 +31,19 @@ if isLeaf1 && isLeaf2 == 1
 end
 
 % visit children
-size1 = bv1.getSize();
-size2 = bv2.getSize();
+size1 = bv1.size;
+size2 = bv2.size;
 
 if (isLeaf2 == 1) || ((isLeaf1 == 0) && (size1 > size2))
     % split the first bv
     c1 = bv1.firstChild;
     c2 = c1 + 1;
     
-    % child of bv1 transpose
-    bvc1 = meshModel1.bvs(c1)';
-    Rc = bvc1.rotMat * bvR;
+    % bounding volumn child of bv1
+    bvc1 = meshModel1.bvs(c1);
+    Rc = bvc1.rotMat' * bvR;
     temp = bvT - bvc1.pos;
-    Tc = bvc1.rotMat * temp;
+    Tc = bvc1.rotMat' * temp;
     res = collide_recurse(res, Rc, Tc, meshModel1, c1, meshModel2, bvInd2, findAll);
     
     if (findAll == 0) && (res.nPairs > 0)
@@ -50,15 +51,16 @@ if (isLeaf2 == 1) || ((isLeaf1 == 0) && (size1 > size2))
     end
     
     bvc2 = meshModel1.bvs(c2);
-    Rc = bvc2.rotMat * bvR;
-    Tc = bvc2.rotMat * (bvT - bvc2.pos);
+    Rc = bvc2.rotMat' * bvR;
+    Tc = bvc2.rotMat' * (bvT - bvc2.pos);
     res = collide_recurse(res, Rc, Tc, meshModel1, c2, meshModel2, bvInd2, findAll);
 else
     c1 = bv2.firstChild;
     c2 = c1 + 1;
     
-    % child of bv2 (not transpose)
+    % child of bv2
     bvc1 = meshModel2.bvs(c1);
+    % rotMat here does not need transpose
     Rc = bvR * bvc1.rotMat;
     Tc = bvR * bvc1.pos + bvT;
     res = collide_recurse(res, Rc, Tc, meshModel1, bvInd1, meshModel2, c1, findAll);

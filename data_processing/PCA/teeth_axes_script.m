@@ -44,4 +44,6 @@ vExportUpper = vExportUpper * axesUpperCropped;
 vExportLower = adjust_axes(vExportLower, w1);
 
 %% Record
-export_data
+vertsLower = vExportLower;
+vertsUpper = vExportUpper;
+export_data;

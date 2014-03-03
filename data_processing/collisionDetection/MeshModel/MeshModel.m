@@ -79,9 +79,11 @@ classdef MeshModel < handle
             % axes/rotation matrix in decreasing order
             C = cov(bvVerts);
             [axes, D] = eig(C);
-            [~, ind] = max(diag(D));
+            %[~, ind] = max(diag(D));
+            [~, inds] = sort(diag(D), 'descend');
+            axes = axes(:, inds);
             % the axis that has the most variance
-            splittingAxis = axes(:, ind);
+            splittingAxis = axes(:, 1);
             
             bv.fitToTris(axes, bvVerts);
             if (length(faceInds) == 1)
@@ -96,7 +98,7 @@ classdef MeshModel < handle
 
                 meanpt = mean_pt(bvVerts)';
                 % project centroid onto the splitting axis
-                coord = dot(meanpt, splittingAxis);
+                coord = dot(splittingAxis, meanpt);
                 [numFirstHalf, faceInds] = model.split_tris(faceInds, splittingAxis, coord);
 
                 % recursion - 2 children bvs

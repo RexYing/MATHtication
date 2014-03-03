@@ -39,7 +39,7 @@ bvR = (meshModel1.bvs(1).rotMat)' * R * meshModel2.bvs(1).rotMat;
 temp = R * meshModel2.bvs(1).pos + T - meshModel1.bvs(1).pos;
 bvT = (meshModel1.bvs(1).rotMat)' * temp;
 
-maxNumPairs = max([meshModel1.numFaces, meshModel2.numFaces]);
+maxNumPairs = max([meshModel1.numFaces, meshModel2.numFaces, 10]);
 collisionPairs = zeros(maxNumPairs, 2);
 
 % nTriTests is only incremented when tri_overlap is called. 2 triangles

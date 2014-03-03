@@ -1,7 +1,10 @@
 function [ vertsType, facesType ] = find_condiles( verts, faces, axes )
 % 
 % given verts and axes in order (post-ant, lateral, vertical)
-% indices of condiles (left: 1, right: 2, teeth: 0)
+% indices of condiles:
+%   condyle 1 is on the positive side of the lateral axis; 
+%   condyle 2 is on the negative side of the lateral axis;
+%   other: 0
 % verts: [N-by-3] matrix whos rows represent points
 %
 % The axes are raw axis (before actually finding the accurate symmetry plane)

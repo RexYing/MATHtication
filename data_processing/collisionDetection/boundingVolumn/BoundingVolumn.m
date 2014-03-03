@@ -16,9 +16,6 @@ classdef BoundingVolumn < handle
     
     methods
         function leaf = isLeaf(bv)
-%             if isempty(bv.firstChild)
-%                 disp('ERROR: first child for a BV not set');
-%             end
             if (bv.firstChild < 0)
                 leaf = 1;
             else

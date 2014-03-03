@@ -14,15 +14,17 @@ for i = 1: numFaces
 end
 
 % Initialize bounding volumns
-% an array of BoundingVolumn objects
-for iBv = (2 * numFaces - 1): -1: 1
-    bvs(iBv) = OBB;
-end
+% an array of BoundingVolumn structs
+
+bvs(2 * numFaces - 1) = struct('pos', [], 'halfDim', [], 'rotMat', [], ...
+    'firstChild', [], 'size', []);
+%bvs(2 * numFaces - 1) = struct();
+
 % Ready to build model
 build_model();
 % write results into struct
-meshModel = struct('bvs', bvs);
-
+meshModel = struct('bvs', bvs, 'verts', verts, 'faces', faces, 'numbvs', numBvs, ...
+    'numVerts', length(verts), 'numFaces', size(faces, 1));
 
 
 % Build the tree model for a mesh once. There is no need to do this
@@ -36,7 +38,7 @@ function build_model()
         disp('Failed when building MeshModel recursively');
         return;
     end
-
+    
     % change BV orientations from world-relative to parent-relative
     makeParentRelative(1, eye(3), [0; 0; 0]);
 end
@@ -48,10 +50,6 @@ end
 % faceInds: 1-by-N, denoting indices of faces that are in a bv
 % The vertex indices for first triangle are faces(faceInds(1), :)
 function isBuilt = buildRecurse(bvInd, faceInds)
-    bv = bvs(bvInd);
-    if (mod(bvInd, 1000) == 0)
-        disp(bvInd);
-    end
     face = faces(faceInds, :);
     bvVerts = verts(face, :);
     % axes/rotation matrix in decreasing order
@@ -61,15 +59,17 @@ function isBuilt = buildRecurse(bvInd, faceInds)
     % the axis that has the most variance
     splittingAxis = axes(:, ind);
 
-    bv.fitToTris(axes, bvVerts);
+    %bv.fitToTris(axes, bvVerts);
+
+    bvs(bvInd) = obb_fit_to_tris(bvs(bvInd), axes, bvVerts);
     if (length(faceInds) == 1)
         % base case:
         % a leaf bv: index a triangle/face distinguished by a negative 
         % sign, instead of bv index
-        bv.firstChild = -faceInds(1);
+        bvs(bvInd).firstChild = -faceInds(1);
     else
         % index a bounding volumn
-        bv.firstChild = numBvs;
+        bvs(bvInd).firstChild = numBvs;
         numBvs = numBvs + 2;
 
         meanpt = mean_pt(bvVerts)';
@@ -129,7 +129,17 @@ end
 % R: parent rotation matrix
 % T: parent translation column vector
 function makeParentRelative(bvInd, R, T)
+    bv = bvs(bvInd);
+    % that is, if bv is NOT a leaf (see bv_struct.m)
+    if bvs(bvInd).firstChild >= 0
+        % make children parent-relative
+        makeParentRelative(bv.firstChild, bv.rotMat, bv.pos);
+        makeParentRelative(bv.firstChild + 1, bv.rotMat, bv.pos);
+    end
 
+    % make itself parent relative
+    bvs(bvInd).rotMat = R' * bv.rotMat;
+    bvs(bvInd).pos = R' * (bv.pos - T);
 end
 
 

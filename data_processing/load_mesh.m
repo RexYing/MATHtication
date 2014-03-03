@@ -37,8 +37,8 @@ function [ verts, faces, weights ] = load_mesh( filename )
 options.name = filename;
 [verts, faces]=read_mesh(filename);
 options.face_vertex_color = repmat([0.5, 0.5, 0.5], size(verts, 1), 1);
-shading interp;
 plot_mesh(verts, faces, options);
+shading interp;
 if nargout == 3
     % find weights
     weights = zeros(1);
