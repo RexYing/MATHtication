@@ -3,6 +3,8 @@
 % script
 % to set up path structure within this directory
 %
+clear all;
+close all;
 
 % function handle for adding a directory and its subdirectory
 addsubdir = @(dir) addpath(genpath(dir));
