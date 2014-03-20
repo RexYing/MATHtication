@@ -15,9 +15,8 @@ uCondyleCenter2 = mean_pt(uCondyle2);
 lCondyleCenter1 = mean_pt(lCondyle1);
 lCondyleCenter2 = mean_pt(lCondyle2);
 
-%%
-trans = createTranslation3d(-1.56, 0, -0.3);
-trans = composeTransforms3d(eulerAnglesToRotation3d(-0.044, -0.093, -4.774), trans);
+trans = createTranslation3d(-1.56, 0, -0.777);
+trans = composeTransforms3d(eulerAnglesToRotation3d(-0.044, -0.093, -4.09), trans);
 %vertsLower1 = vertsLower - repmat([0 0 1], length(vertsLower), 1);
 
 %% rotate around condyles
@@ -88,6 +87,7 @@ transi = trans;
 transi = composeTransforms3d(transi, createTranslation3d(-1, 0, 0));
 CollisionNum = zeros(30, 1);
 for i = 1: 30
+    progressbar(i, 30);
     res = identify_collision(transi(1:3, 1:3), transi(1:3, 4), m1, eye(3), zeros(3, 1), m2, 1);
     if (res.nPairs > 2000)
         CollisionNum(i) = -10;
@@ -99,5 +99,37 @@ end
 xgrid = linspace(-1, -1 + apStep * 29, 30);
 scatter(xgrid, CollisionNum);
 xlabel('Translation');
-%% 
-close(1);
+
+% rotation3dToEulerAngles(transi);
+%% Vertical distance (kdtree)
+% Rotate around the line connecting 2 condyles
+
+%vertsLower = vertsLower * trans(1: 3, 1: 3)' + repmat(trans(1: 3, 4)', size(vertsLower, 1), 1);
+tmp = transformPoint3d(vertsLower, trans);
+sampleSize = 2000;
+%sampleInds = farthest_point_downsample(vertsLower, facesLower, sampleSize);
+sampleInds = load('landmarks_lower_2000');
+sampleInds = sampleInds.sample;
+
+latAngleStep = pi/36;
+orig = lCondyleCenter1;
+dir = lCondyleCenter1 - lCondyleCenter2;
+transStep = createRotation3dLineAngle([orig dir], -latAngleStep);
+
+% construct kdtree for all centroids on the upper jaw
+centroids = zeros(length(facesUpper), 3);
+for i = 1: length(facesUpper)
+    centroids(i, :) = (vertsUpper(facesUpper(i, 1), :) + vertsUpper(facesUpper(i, 2), :) + ...
+        vertsUpper(facesUpper(i, 3), :)) / 3;
+end
+kdtree = KDTreeSearcher(centroids, 'distance', 'euclidean');
+
+sampleInds = 1: size(vertsLower, 1);
+for i = 1: 2
+    sampleLower = tmp(sampleInds, :);
+    [inds, D] = knnsearch(kdtree, sampleLower);
+    tmp = transformPoint3d(vertsLower, transStep);
+    figure(i);
+    hist(D, 100);
+end
+

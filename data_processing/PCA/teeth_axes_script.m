@@ -20,6 +20,7 @@ axesLowerRaw = identify_axes(verts_lower, find_axes(verts_lower));
 meanpt = ((w1 ~= 0)' * verts_lower) / sum((w1 ~= 0));
 %meanpt = (w1' * verts_lower) / sum(w1);
 vertsLower = verts_lower - repmat(meanpt, length(verts_lower), 1);
+% the inverse transformation inv(axes)' = axes
 vertsLower = vertsLower * axesLowerCropped;
 facesLower = faces_lower;
 
@@ -33,7 +34,7 @@ vertsUpper = verts_upper - repmat(meanpt, length(verts_upper), 1);
 vertsUpper = vertsUpper * axesUpperCropped;
 facesUpper = faces_upper;
 
-%clearvars verts_upper faces_upper verts_lower faces_lower
+clearvars verts_upper faces_upper verts_lower faces_lower
 
 
 %% Adjust
@@ -41,6 +42,4 @@ facesUpper = faces_upper;
 vertsLower = adjust_axes(vertsLower, w1);
 
 %% Record
-vertsLower = vertsLower;
-vertsUpper = vertsUpper;
 export_data;

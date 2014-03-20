@@ -1,7 +1,6 @@
 function [ res ] = identify_collision( R1, T1, meshModel1, R2, T2, ...
     meshModel2, findAll )
 %IDENTIFY_COLLISION Detects collision between two meshes
-%   Detailed explanation goes here
 %
 % [R1, T1] is the placement of model 1 in the world. (rotation matrix and
 % translation vector)
