@@ -12,10 +12,10 @@ res = identify_collision(eye(3), zeros(3, 1), a, eye(3), zeros(3, 1), b, 1);
 clearvars a b res
 disp('building model for the lower jaw');
 %m1 = MeshModel(verts_lower, faces_lower);
-m1 = build_mesh_model(verts_lower, faces_lower);
+m1 = build_mesh_model(vertsLower, facesLower);
 disp('building model for the upper jaw');
 %m2 = MeshModel(verts_upper, faces_upper);
-m2 = build_mesh_model(verts_upper, faces_upper);
+m2 = build_mesh_model(vertsUpper, facesUpper);
 disp('finished building');
 res = identify_collision(eye(3), zeros(3, 1), m1, eye(3), zeros(3, 1), m2, 1);
 

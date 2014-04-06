@@ -15,19 +15,21 @@ uCondyleCenter2 = mean_pt(uCondyle2);
 lCondyleCenter1 = mean_pt(lCondyle1);
 lCondyleCenter2 = mean_pt(lCondyle2);
 
-trans = createTranslation3d(-1.56, 0, -0.777);
+trans = createTranslation3d(-1.56, 0, -1.977);
 trans = composeTransforms3d(eulerAnglesToRotation3d(-0.044, -0.093, -4.09), trans);
 %vertsLower1 = vertsLower - repmat([0 0 1], length(vertsLower), 1);
 
 %% rotate around condyles
 % angle each step in degrees
-latAngleStep = pi/2880;
+latAngleStep = pi/360;
 orig = lCondyleCenter1;
 dir = lCondyleCenter1 - lCondyleCenter2;
 transStep = createRotation3dLineAngle([orig dir], latAngleStep);
 transi = trans;
-CollisionNum = zeros(50, 1);
-for i = 1: 50
+num = 20;
+CollisionNum = zeros(num, 1);
+for i = 1: num
+    progressbar(i, num);
     res = identify_collision(transi(1:3, 1:3), transi(1:3, 4), m1, eye(3), zeros(3, 1), m2, 1);
     CollisionNum(i) = res.nPairs;
     if (res.nPairs == 0)
@@ -36,7 +38,7 @@ for i = 1: 50
     end
     transi = composeTransforms3d(transi, transStep);
 end
-plot(1:50, CollisionNum);
+plot(1: num, CollisionNum);
 fprintf('\n At %d angle of lateral rotation, the jaws are disjoint.\n\n', disj * latAngleStep);
 %% rotate around one condyle in z-dir
 verAngleStep = pi/720;
@@ -56,19 +58,22 @@ end
 latAngleStep = pi/720;
 orig = lCondyleCenter1;
 dir = lCondyleCenter1 - lCondyleCenter2;
-transStep = createRotation3dLineAngle([orig dir], latAngleStep);
+% controls opening and closing of jaw
+transStep = createRotation3dLineAngle([orig dir], -latAngleStep);
 transi = trans;
 CollisionNum = zeros(40, 20);
 % vertical
 verAngleStep = pi/720;
 verOrig = lCondyleCenter1;
 verDir = [0 0 1];
+% controls rotation around z-axis
 verTransStep = createRotation3dLineAngle([verOrig verDir], verAngleStep);
-for i = 1: 10 % y axis
+for i = 1: 10 % open and close
     transj = transi;
     for j = 1: 10
         res = identify_collision(transj(1:3, 1:3), transj(1:3, 4), m1, eye(3), zeros(3, 1), m2, 1);
         CollisionNum(i, j) = res.nPairs;
+        res.nPairs
         transj = composeTransforms3d(transj, verTransStep);
     end
     transi = composeTransforms3d(transi, transStep);
@@ -101,7 +106,7 @@ scatter(xgrid, CollisionNum);
 xlabel('Translation');
 
 % rotation3dToEulerAngles(transi);
-%% Vertical distance (kdtree)
+%% shortest distance (kdtree)
 % Rotate around the line connecting 2 condyles
 
 %vertsLower = vertsLower * trans(1: 3, 1: 3)' + repmat(trans(1: 3, 4)', size(vertsLower, 1), 1);
@@ -109,12 +114,14 @@ tmp = transformPoint3d(vertsLower, trans);
 sampleSize = 2000;
 %sampleInds = farthest_point_downsample(vertsLower, facesLower, sampleSize);
 sampleInds = load('landmarks_lower_2000');
-sampleInds = sampleInds.sample;
-
-latAngleStep = pi/36;
+if isfield(sampleInds, 'sample')
+    sampleInds = sampleInds.sample;
+end
+%min(tmp(:, 3))
+latAngleStep = pi/90;
 orig = lCondyleCenter1;
 dir = lCondyleCenter1 - lCondyleCenter2;
-transStep = createRotation3dLineAngle([orig dir], -latAngleStep);
+transStep = createRotation3dLineAngle([orig dir], latAngleStep);
 
 % construct kdtree for all centroids on the upper jaw
 centroids = zeros(length(facesUpper), 3);
@@ -125,11 +132,38 @@ end
 kdtree = KDTreeSearcher(centroids, 'distance', 'euclidean');
 
 sampleInds = 1: size(vertsLower, 1);
-for i = 1: 2
+for i = 1: 5
     sampleLower = tmp(sampleInds, :);
     [inds, D] = knnsearch(kdtree, sampleLower);
-    tmp = transformPoint3d(vertsLower, transStep);
+    tmp = transformPoint3d(tmp, transStep);
     figure(i);
     hist(D, 100);
+    %min(tmp(:, 3))
 end
 
+%% Dummy triangle
+vLine = [0, 0, 0; 0, 0, 1000000];
+fLine = [1, 1, 2];
+mLine = build_mesh_model(vLine, fLine);
+
+%% Vertical distance
+tmp = transformPoint3d(vertsLower, trans);
+result = zeros(length(sampleInds), 1);
+count = 0;
+for i = 1: length(sampleInds)
+    progressbar(i, length(sampleInds));
+    line = [tmp(sampleInds(i), :), 0, 0, 1];
+    %[~, pos, ~] = intersectLineMesh3d(line, vertsUpper, facesUpper);
+    intersection = identify_collision(eye(3), tmp(sampleInds(i), :)', mLine, eye(3), zeros(3, 1), m2, 0);
+    if intersection.nPairs > 0
+        faceInd = intersection.pairs(1, 2);
+        tri = vertsUpper(facesUpper(faceInd, :), :);
+        pt = intersectLineTriangle3d(line, tri);
+        diff = pt - tmp(sampleInds(i), :);
+        if ~isnan(diff(3))
+            count = count + 1;
+            result(count) = diff(3);
+        end
+    end
+end
+hist(result(1: count), 50);
